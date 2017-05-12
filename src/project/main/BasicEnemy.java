@@ -8,8 +8,8 @@ public class BasicEnemy extends GameObject {
  public BasicEnemy(int x, int y, ID id) {
   super(x, y, id);
   
-  velX = 5;
-  velY = 5;
+  velX = 0;
+  velY = 0;
  }
 
  @Override
@@ -28,5 +28,4 @@ public class BasicEnemy extends GameObject {
   g.fillRect(x, y, 16, 16);
   
  }
-
 }

@@ -2,9 +2,7 @@ package project.main;
 
 import java.awt.Graphics;
 import java.awt.Image;
-
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 public class Coin extends GameObject {
 
@@ -22,6 +20,7 @@ public class Coin extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		Image img = new ImageIcon(this.getClass().getResource("/Coin.png")).getImage();
-		g.drawImage(img, 0, 0, 16, 16, 0, 0, 16, 16, null);
+		Camera c = Game.camera;
+		g.drawImage(img, x - c.X, y - c.Y, x + 16 - c.X, y + 16 - c.Y, 0, 0, 16, 16, null);
 	}
 }

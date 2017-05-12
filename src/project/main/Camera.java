@@ -6,7 +6,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class Camera {
-	private int X, Y;
+	public int X, Y;
 	private Player p;
 	
 	public Camera(Player p){
@@ -14,13 +14,15 @@ public class Camera {
 	}
 
 	public void tick() {
-		X += p.getVelX();
-		Y += p.getVelY();
-		
+		X += 3 * p.getVelX();
+		Y += 3 * p.getVelY();
 	}
 	
 	public void render(Graphics g) {
 		Image img = new ImageIcon(this.getClass().getResource("/Coin.png")).getImage();
 		g.drawImage(img, 0, 0, 16, 16, 0, 0, 16, 16, null);
 	}
+	
+	public int getX(){ return X; }
+	public int getY(){ return Y; }
 }
