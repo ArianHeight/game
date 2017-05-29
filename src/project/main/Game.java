@@ -1,11 +1,9 @@
 package project.main;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferStrategy;
-import java.util.Random;
 
 import javax.swing.ImageIcon;
 
@@ -16,29 +14,64 @@ public class Game extends Canvas implements Runnable{
 	public static final int tileSizeX = 64, tileSizeY = 64;
 	private Thread thread;
 	private boolean running = false;
+	
 	public static Camera camera;
-	private Player player;
- 
-	private Random r = new Random();
-	private Handler handler;
+	public static Player player;
+	
+	public static Handler handler;
+	private HUD hud;
+	private Spawner spawner;
+	
+	private Menu menu;
+	private BallsMenu bm;
+	private ZombieMenu zm;
+	private UpgradeStore us;
+	private End e;
+	
+	public static ID currentBall;
+	
+	private MouseInput mi;
+	
+	// possible states for the game to be in
+	public enum STATE {
+		Menu,
+		BallsMenu,
+		ZombieMenu,
+		Help,
+		UpgradeStore,
+		Game,
+		End;
+	};
+	
+	public static STATE gameState = STATE.Menu;
+	
  
 	public Game(){
+		currentBall = ID.FireBall;
 		handler = new Handler();
-		this.addKeyListener(new KeyboardInput(handler));
-		new Window(WIDTH, HEIGHT, "Game", this);
+		hud = new HUD();
+		
+		player = new Player(WIDTH/2, HEIGHT/2, hud);
+		camera = new Camera(player);
+		player.updateWindowCoordinates();
+		menu = new Menu(this);
+		bm = new BallsMenu();
+		zm = new ZombieMenu(this);
+		us = new UpgradeStore(hud);
+		
+		spawner = new Spawner(handler, hud);
+		
+		mi = new MouseInput(this, handler, player, hud);
+		this.addMouseListener(mi);
+		this.addMouseListener(us);
+		this.addKeyListener(new KeyboardInput());
+		new Window(WIDTH, HEIGHT, "Zombie Shooter", this);
   
-  		for (int i = 0; i < 20; i++){
+		/*
+  		for (int i = 0; i < 0; i++){
    			handler.addObject(new Coin(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.Coin));
   		}
-		
-		player = new Player(WIDTH/2 - 32, HEIGHT/2 - 32, ID.Player);
-		handler.addObject(player);
-		handler.addObject(new Coin(20, 20, ID.Coin));
-		camera = new Camera(player);
-		//handler.addObject(new Player(WIDTH/2 + 32, HEIGHT/2 - 32, ID.Player2));
-		for (int i = 0; i < 20; i++){
-			handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.BasicEnemy));
-		}
+  		*/
 	}
  
 	public synchronized void start(){
@@ -55,15 +88,17 @@ public class Game extends Canvas implements Runnable{
 			e.printStackTrace();
 		}
 	}
- 
+	
+	
 	public void run()
     {
+		
+		this.requestFocus(); // need not to click on window to focus
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
         long timer = System.currentTimeMillis();
-        //int frames = 0;
         while(running)
         {
         	long now = System.nanoTime();
@@ -77,39 +112,48 @@ public class Game extends Canvas implements Runnable{
         	if(running){
         		render();
         	}
-
-        	//frames++;
                             
             if (System.currentTimeMillis() - timer > 1000)
             {
             	timer += 1000;
-            	//frames = 0;
             }
         }
         stop();
+       
     }
  
 	private void tick(){
 		handler.tick();
-		camera.tick();
+		player.tick();
+		if (gameState == STATE.Game){
+			hud.tick();
+			camera.tick();
+			spawner.tick();
+		}
+		/*
+		if (HUD.HEALTH <= 0){
+			HUD.HEALTH = 100;
+			gameState = STATE.End;
+			e = new End(hud);
+		}
+		*/
 	}
  
 	private void render(){
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null){
-			this.createBufferStrategy(3);
+			this.createBufferStrategy(2);
 			return;
 		}
   
 		Graphics g = bs.getDrawGraphics();
-  
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+		
+		// creates the tiled background
 		Image img1 = new ImageIcon(this.getClass().getResource("/blueGrass.png")).getImage();
 		Image img2 = new ImageIcon(this.getClass().getResource("/stone.png")).getImage();
 
-		for (int i = -9; i <= 2*WIDTH / tileSizeX + 1; i++){
-			for (int j = -9; j <= 2*HEIGHT / tileSizeY + 1; j++){
+		for (int i = -15; i <= 3*WIDTH / tileSizeX + 1; i++){
+			for (int j = -15; j <= 3*HEIGHT / tileSizeY + 1; j++){
 				Image img;
 				if ((i + j) % 2 == 0){
 					img = img1;
@@ -117,18 +161,46 @@ public class Game extends Canvas implements Runnable{
 				else {
 					img = img2;
 				}
-				g.drawImage(img, tileSizeX * (i-1) - camera.getX(), tileSizeY * (j-1) - camera.getY(), tileSizeX * i - camera.getX(), tileSizeY * j - camera.getY(), 0, 0, 32, 32, null);
+				g.drawImage(img, tileSizeX * (i-1) - (int)camera.getX(), tileSizeY * (j-1) - (int)camera.getY(), tileSizeX * i - (int)camera.getX(), tileSizeY * j - (int)camera.getY(), 0, 0, 32, 32, null);
 			}
 		}
-		//g.drawImage(img2, -253, -253, -5, -5, 0, 0, 32, 32, null);
-
+		
+		player.render(g);
 		handler.render(g);
-  
+		if (gameState == STATE.Game){
+			hud.render(g);
+		} 
+		else if (gameState == STATE.Menu || gameState == STATE.Help){
+			menu.render(g);
+		}
+		else if (gameState == STATE.BallsMenu){
+			bm.render(g);
+		}
+		else if (gameState == STATE.ZombieMenu){
+			zm.render(g);
+		}
+		if (gameState == STATE.End){
+			e.render(g);
+			handler.freezeObjects();
+		} else {
+			handler.unfreezeObjects();
+		}
+		
+		if (gameState == STATE.UpgradeStore){
+			us.render(g);
+			handler.freezeObjects();
+			player.freeze();
+		} else {
+			handler.unfreezeObjects();
+			player.unFreeze();
+		}
+		
+
 		g.dispose();
 		bs.show();
 	}
  
-    public static int clamp(int var, int min, int max){
+    public static double clamp(double var, double min, double max){
 		if (var >= max){
 			return var = max;
 		}
@@ -136,6 +208,62 @@ public class Game extends Canvas implements Runnable{
 			return var = min;
 		}
 		return var;
+    }
+    
+    public void reset(){
+    	currentBall = ID.FireBall;
+    	handler.clearAll();
+		hud.clearAll();
+		
+		player = new Player(WIDTH/2, HEIGHT/2, hud);
+		camera = new Camera(player);
+		player.updateWindowCoordinates();
+		
+		gameState = STATE.Menu;
+		
+		spawner = new Spawner(handler, hud);
+		
+		mi.changePlayer(player);
+    }
+    
+    public static void generateBall(double x, double y, double xVal, double yVal, Player p){
+    	if (currentBall == ID.WaterBall){
+    		handler.addObject(new WaterBall(x, y, xVal, yVal, p));
+    	}
+    	else if (currentBall == ID.FireBall){
+    		handler.addObject(new FireBall(x, y, xVal, yVal, p));
+    	}
+    	else if (currentBall == ID.RockBall){
+    		handler.addObject(new RockBall(x, y, xVal, yVal, p));
+    	}
+    	/*
+    	else if (currentBall == ID.LifeBall){
+    		handler.addObject(new LifeBall(x, y, xVal, yVal, p));
+    	}
+    	else if (currentBall == ID.FluxBall){
+    		handler.addObject(new FluxBall(x, y, xVal, yVal, p));
+    	}
+    	*/
+    }
+    
+    public static void generateBall(double x, double y, double angle, Player p){
+    	if (currentBall == ID.WaterBall){
+    		handler.addObject(new WaterBall(x, y, angle, p));
+    	}
+    	else if (currentBall == ID.FireBall){
+    		handler.addObject(new FireBall(x, y, angle, p));
+    	}
+    	else if (currentBall == ID.RockBall){
+    		handler.addObject(new RockBall(x, y, angle, p));
+    	}
+    	/*
+    	else if (currentBall == ID.LifeBall){
+    		handler.addObject(new LifeBall(x, y, xVal, yVal, p));
+    	}
+    	else if (currentBall == ID.FluxBall){
+    		handler.addObject(new FluxBall(x, y, xVal, yVal, p));
+    	}
+    	*/
     }
  
  	public static void main (String [] args){

@@ -6,23 +6,26 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class Camera {
-	public int X, Y;
+	public double X, Y;
 	private Player p;
 	
 	public Camera(Player p){
 		this.p = p;
 	}
-
+	
+	public double lerp(double a, double b, double t)
+	{
+		return (1.0 - t) * a + t * b; 
+	}
+	
 	public void tick() {
-		X += 3 * p.getVelX();
-		Y += 3 * p.getVelY();
+		this.X = this.lerp(this.X, this.p.getX(), 0.2);
+		this.Y = this.lerp(this.Y, this.p.getY(), 0.2);
 	}
 	
 	public void render(Graphics g) {
-		Image img = new ImageIcon(this.getClass().getResource("/Coin.png")).getImage();
-		g.drawImage(img, 0, 0, 16, 16, 0, 0, 16, 16, null);
 	}
 	
-	public int getX(){ return X; }
-	public int getY(){ return Y; }
+	public double getX(){ return X; }
+	public double getY(){ return Y; }
 }
