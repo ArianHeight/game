@@ -10,44 +10,38 @@ import java.util.LinkedList;
  */
 
 public class Handler {
-    	 
-	LinkedList<GameObject> object = new LinkedList<GameObject>();
 	
-	LinkedList<GameObject> enemies = new LinkedList<GameObject>();
-	LinkedList<GameObject> balls = new LinkedList<GameObject>();
-	LinkedList<GameObject> collectibles = new LinkedList<GameObject>();
+	LinkedList<Enemy> enemies = new LinkedList<Enemy>();
+	LinkedList<Ball> balls = new LinkedList<Ball>();
+	LinkedList<Collectible> collectibles = new LinkedList<Collectible>();
 	 
 	public void tick(){
-		for (int i = 0; i < object.size(); i++){
-			GameObject tempObject = object.get(i);
-			tempObject.tick();
+		for (int i = enemies.size() - 1; i >= 0; i++){
+			enemies.get(i).tick();
+		}
+		for (int i = balls.size() - 1; i >= 0; i++){
+			balls.get(i).tick();
+		}
+		for (int i = collectibles.size() - 1; i >= 0; i++){
+			collectibles.get(i).tick();
 		}
 	}
 	 
 	public void render(Graphics g){
-		for (int i = 0; i < object.size(); i++){
-			GameObject tempObject = object.get(i);
-			tempObject.render(g);
+		for (int i = enemies.size() - 1; i >= 0; i++){
+			enemies.get(i).render(g);
+		}
+		for (Ball b : balls){
+			b.render(g);
+		}
+		for (Collectible c : collectibles){
+			c.render(g);
 		}
 	}
 	 
-	public void addObject(GameObject object){
-		this.object.add(object);
-	}
-	
-	public void addObject(Enemy object){
-		this.enemies.add(object);
-	}
-	 
-	public void removeObject(GameObject object){
-		this.object.remove(object);
-	}
-	
-	public void printObjects(){
-		for (GameObject go: object){
-			System.out.println(go);
-		}
-	}
+	public void addObject(Enemy object){ this.enemies.add(object); }
+	public void addObject(Ball object){ this.balls.add(object); }
+	public void addObject(Collectible object){ this.collectibles.add(object); }
 	
 	public void clearAll(){
 		clearEnemies();
@@ -60,15 +54,17 @@ public class Handler {
 	public void clearBalls(){ balls.clear(); }
 	public void clearCollectibles(){ collectibles.clear(); }
 	
+
 	public void freezeObjects(){
-		for (GameObject go: object){
-			go.setMoving(false);
+		for (Enemy e: enemies){
+			e.setMoving(false);
 		}
 	}
 	
 	public void unfreezeObjects(){
-		for (GameObject go: object){
-			go.setMoving(true);
+		for (Enemy e: enemies){
+			e.setMoving(true);
 		}
 	}
+	
 }

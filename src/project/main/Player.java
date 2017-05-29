@@ -45,18 +45,22 @@ public class Player extends GameObject{
 	}
 	
 	private void collision(){
-		for (int i = Game.handler.object.size() - 1; i >= 0; i--){
-			GameObject tempObject = Game.handler.object.get(i);
+		for (int i = Game.handler.enemies.size() - 1; i >= 0; i--){
+			Enemy tempObject = Game.handler.enemies.get(i);
 			
 			if (tempObject.getId() == ID.Zombie || tempObject.getId() == ID.ZombieKnight || tempObject.getId() == ID.ZombieThrower){
 				if (getBounds().intersects(tempObject.getBounds())){
 					HUD.HEALTH -= 1;
 				}
 			}
+		}
+		
+		for (int i = Game.handler.collectibles.size() - 1; i >= 0; i--){
+			Collectible tempObject = Game.handler.collectibles.get(i);
 			if (tempObject.getId() == ID.Coin){
 				if (getBounds().intersects(tempObject.getBounds())){
 					hud.setCoins(hud.getCoins() + 1);
-					Game.handler.removeObject(tempObject);
+					Game.handler.collectibles.remove(tempObject);
 				}
 			}
 		}

@@ -51,7 +51,7 @@ public abstract class Ball extends GameObject {
 		}
 		
 		if (time == 0){
-			Game.handler.removeObject(this);
+			Game.handler.balls.remove(this);
 		}
 	}
 

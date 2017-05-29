@@ -39,14 +39,14 @@ public abstract class Enemy extends GameObject {
 	}
 	
 	private void collision(){
-		for (int i = handler.object.size() - 1; i >= 0; i--){
-			GameObject tempObject = handler.object.get(i);
+		for (int i = handler.balls.size() - 1; i >= 0; i--){
+			GameObject tempObject = handler.enemies.get(i);
 			
 			if (tempObject.getId() == ID.WaterBall || tempObject.getId() == ID.FireBall || tempObject.getId() == ID.RockBall){
 				if (getBounds().intersects(tempObject.getBounds())){
 					health -= (int)((Ball)tempObject).getPower();
 					if (!((Ball)tempObject).infinitePierce){
-						handler.removeObject(tempObject);
+						handler.balls.remove(tempObject);
 					}
 				}
 			}
@@ -58,7 +58,7 @@ public abstract class Enemy extends GameObject {
 		move();
 		
 		if (health <= 0){
-			handler.removeObject(this);
+			handler.enemies.remove(this);
 			handler.addObject(new Coin((int)x, (int)y));
 			hud.setScore(hud.getScore() + 1);
 		}
