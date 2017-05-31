@@ -12,8 +12,8 @@ public class UpgradeStore extends MouseAdapter {
 	private int [] baseCosts = {10, 10, 10, 30, 30, 1337};
 	private int [] upgradeIncreases = {15, 10, 10, 30, 30, 9001};
 	
-	private boolean [] ballPurchased = {false};
-	private int [] ballCosts = {20};
+	private boolean [] ballPurchased = {false, false};
+	private int [] ballCosts = {20, 2};
 	
 	public UpgradeStore(HUD hud){
 		this.hud = hud;
@@ -71,8 +71,15 @@ public class UpgradeStore extends MouseAdapter {
 		g.drawString("Cost: " + ballCosts[0], 110, 340);
 		g.drawRect(100, 300, 100, 80);
 		
+		// Ball box 2
+		g.setFont(new Font("arial", 0, 12));
+		g.drawString("Flux Ball", 260, 320);
+		g.drawString("Cost: " + ballCosts[1], 260, 340);
+		g.drawRect(250, 300, 100, 80);
+		
 		g.drawString("Coins: " + hud.getCoins(), Game.WIDTH / 2 - 50, 500);
 		g.drawString("Press u to go back: ", Game.WIDTH / 2 - 50, 550);
+		g.drawString("Current Ball: " + Game.currentBall, Game.WIDTH / 2 - 50, 600);
 	}
 	
 	public void mousePressed(MouseEvent e){
@@ -115,11 +122,29 @@ public class UpgradeStore extends MouseAdapter {
 		// ball box 1
 		if (mx >= 100 && mx <= 200){
 			if (my >= 300 && my <= 380){
-				if (hud.getCoins() >= ballCosts[0]){
+				if (ballPurchased[0]){
+					Game.currentBall = ID.RockBall;
+				}
+				else if (hud.getCoins() >= ballCosts[0]){
 					hud.setCoins(hud.getCoins() - ballCosts[0]);
 					ballCosts[0] = 99999;
 					ballPurchased[0] = true;
 					Game.currentBall = ID.RockBall;
+				}
+			}
+		}
+		
+		// ball box 2
+		if (mx >= 250 && mx <= 400){
+			if (my >= 300 && my <= 380){
+				if (ballPurchased[0]){
+					Game.currentBall = ID.FluxBall;
+				}
+				else if (hud.getCoins() >= ballCosts[1]){
+					hud.setCoins(hud.getCoins() - ballCosts[1]);
+					ballCosts[1] = 99999;
+					ballPurchased[1] = true;
+					Game.currentBall = ID.FluxBall;
 				}
 			}
 		}

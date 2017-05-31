@@ -55,4 +55,9 @@ public class state
 	{
 		return this.pushState;
 	}
+	
+	public String toString()
+	{
+		return "" + this.stateName; 
+	}
 }

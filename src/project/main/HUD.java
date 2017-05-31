@@ -10,12 +10,13 @@ import java.awt.Graphics;
  *
  */
 public class HUD {
+
 	public static double HEALTH = 100, MAX_HEALTH = 100;
 	private double greenValue = 255;
 	
 	private int time = 0;
 	private int score = 0;
-	private int level = 1;
+	private int level = 0;
 	private int coins = 0;
 	
 	public void tick(){		
@@ -38,6 +39,7 @@ public class HUD {
 		g.drawString("Level: " + level, 15, 85);
 		g.drawString("Score: " + score, 15, 100);
 		g.drawString("Coins: " + coins, 15, 115);
+		g.drawString("Enemies Left : " + Game.spawner.getEnemiesLeft(), 15, 130);
 	}
 	
 	public void clearAll(){
@@ -46,7 +48,7 @@ public class HUD {
 		greenValue = HEALTH * 2;
 		time = 0;
 		score = 0;
-		level = 1;
+		level = 0;
 		coins = 0;
 	}
 	

@@ -45,7 +45,7 @@ public class KeyboardInput extends KeyAdapter {
 				p.setVelX(-vel);
 			}
 			if (key == KeyEvent.VK_SPACE){
-				System.out.println("spiral");
+				//System.out.println("spiral");
 				p.spiral();
 			}
 		}

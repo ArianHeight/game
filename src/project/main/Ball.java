@@ -24,8 +24,8 @@ public abstract class Ball extends GameObject {
 		this.id = ID.Ball;
 		this.vel = vel;
 		time = 300;
-		velX = vel * xVal / Math.sqrt(xVal * xVal + yVal * yVal) + p.getVelX();
-		velY = vel * yVal / Math.sqrt(xVal * xVal + yVal * yVal) + p.getVelY();	
+		velX = vel * xVal / Math.sqrt(xVal * xVal + yVal * yVal) ;
+		velY = vel * yVal / Math.sqrt(xVal * xVal + yVal * yVal) ;	
 	}
 	
 	/**
@@ -38,8 +38,8 @@ public abstract class Ball extends GameObject {
 		this.id = ID.Ball;
 		this.vel = vel;
 		time = 300;
-		velX = vel * Math.cos(angle) + p.getVelX();
-		velY = vel * Math.sin(angle) + p.getVelY();	
+		velX = vel * Math.cos(angle) ;
+		velY = vel * Math.sin(angle) ;	
 	}
 
 	@Override

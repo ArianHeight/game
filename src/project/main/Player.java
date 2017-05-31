@@ -35,10 +35,8 @@ public class Player extends GameObject{
 		}
 		
 		  
-		//x = Game.clamp(x, -640, 1350);
-		//y = Game.clamp(y, -640, 780);
-		//x = Game.clamp(x, 0, 1350);
-		//y = Game.clamp(y, 0, 780);
+		x = Game.clamp(x, -1000, 2625);
+		y = Game.clamp(y, -1000, 1500);
 		
 		collision();
 		
@@ -67,7 +65,7 @@ public class Player extends GameObject{
 	}
 	
 	public void spiral(){
-		System.out.println(x + " " + y);
+		//System.out.println(x + " " + y);
 		for (int i = 0; i < 360; i += 10){
 			Game.generateBall(x + 16, y + 16, i * 2 * Math.PI / 360, this);
 		}

@@ -15,6 +15,8 @@ public class Coin extends Collectible {
 
 	@Override
 	public void tick() {
+		super.tick();
+		
 		double xDiff = Game.player.getX() - x;
 		double yDiff = Game.player.getY() - y;
 		double dist = Math.sqrt((xDiff * xDiff) + (yDiff * yDiff));

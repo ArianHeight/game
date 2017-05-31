@@ -9,12 +9,9 @@ import project.main.Game.STATE;
 
 
 public class Menu extends MouseAdapter {
-	
-	private Game game;
 	//private Random r = new Random();
 	
-	public Menu(Game game){
-		this.game = game;
+	public Menu(){
 	}
 	/*
 	public void mousePressed(MouseEvent e){
@@ -57,7 +54,7 @@ public class Menu extends MouseAdapter {
 	}
 	
 	public void render (Graphics g){
-		if (game.gameState == STATE.Menu){
+		if (Game.gameState == STATE.Menu){
 			Font font1 = new Font("arial", 1, 50);
 			Font font2 = new Font("arial", 1, 30);
 			Font font3 = new Font("arial", 1, 15);
@@ -82,7 +79,7 @@ public class Menu extends MouseAdapter {
 			g.setFont(font3);
 			g.drawString("Game Produced by Edmond Xue and Sean Wang. Copyright 2017", Game.WIDTH / 2 - 240, 600);
 		}
-		else if (game.gameState == STATE.Help){
+		else if (Game.gameState == STATE.Help){
 			Font font1 = new Font("arial", 1, 50);
 			Font font2 = new Font("arial", 1, 30);
 			Font font3 = new Font("arial", 1, 20);
@@ -95,7 +92,7 @@ public class Menu extends MouseAdapter {
 			g.drawString("Use UDLR keys to move player. \nClick to shoot.", 400, 200);
 			g.setFont(font2);
 			g.drawRect(Game.WIDTH / 2 - 100, 350, 200, 64);
-			g.drawString("Back", 600, 390);
+			g.drawString("Back", 600, 620);
 		}
 	}	
 }

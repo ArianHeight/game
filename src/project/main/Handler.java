@@ -16,26 +16,26 @@ public class Handler {
 	LinkedList<Collectible> collectibles = new LinkedList<Collectible>();
 	 
 	public void tick(){
-		for (int i = enemies.size() - 1; i >= 0; i++){
+		for (int i = enemies.size() - 1; i >= 0; i--){
 			enemies.get(i).tick();
 		}
-		for (int i = balls.size() - 1; i >= 0; i++){
+		for (int i = balls.size() - 1; i >= 0; i--){
 			balls.get(i).tick();
 		}
-		for (int i = collectibles.size() - 1; i >= 0; i++){
+		for (int i = collectibles.size() - 1; i >= 0; i--){
 			collectibles.get(i).tick();
 		}
 	}
 	 
 	public void render(Graphics g){
-		for (int i = enemies.size() - 1; i >= 0; i++){
+		for (int i = enemies.size() - 1; i >= 0; i--){
 			enemies.get(i).render(g);
 		}
-		for (Ball b : balls){
-			b.render(g);
+		for (int i = balls.size() - 1; i >= 0; i--){
+			balls.get(i).render(g);
 		}
-		for (Collectible c : collectibles){
-			c.render(g);
+		for (int i = collectibles.size() - 1; i >= 0; i--){
+			collectibles.get(i).render(g);
 		}
 	}
 	 
@@ -59,11 +59,17 @@ public class Handler {
 		for (Enemy e: enemies){
 			e.setMoving(false);
 		}
+		for (Ball b: balls){
+			b.setMoving(false);
+		}
 	}
 	
 	public void unfreezeObjects(){
 		for (Enemy e: enemies){
 			e.setMoving(true);
+		}
+		for (Ball b: balls){
+			b.setMoving(true);
 		}
 	}
 	

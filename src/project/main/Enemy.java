@@ -1,4 +1,5 @@
 package project.main;
+import simpleAI.*;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -13,10 +14,14 @@ public abstract class Enemy extends GameObject {
 	protected double vel;
 	
 	protected List<String> conditions;
+	protected List<String> effects;
+	protected FSM ai;
 	
 	private Handler handler;
 	private int health;
 	private HUD hud;
+	
+	private int stunTimer;
 	
 	public Enemy(int x, int y, Handler handler, HUD hud) {
 		super(x, y);
@@ -28,6 +33,8 @@ public abstract class Enemy extends GameObject {
 		vel = Math.sqrt(velX * velX + velY * velY);
 		
 		this.conditions = new ArrayList<String>();
+		this.ai = new simpleChaser();
+		this.effects = this.ai.getFX();
 	}
 	
 	public Rectangle getBounds(){
@@ -38,19 +45,21 @@ public abstract class Enemy extends GameObject {
 		return new Rectangle((int)winX, (int)winY, 32, 32);
 	}
 	
-	private void collision(){
+	private boolean collision(){
 		for (int i = handler.balls.size() - 1; i >= 0; i--){
-			GameObject tempObject = handler.enemies.get(i);
+			Ball tempObject = handler.balls.get(i);
 			
-			if (tempObject.getId() == ID.WaterBall || tempObject.getId() == ID.FireBall || tempObject.getId() == ID.RockBall){
+			if (tempObject.getId() == ID.WaterBall || tempObject.getId() == ID.FireBall || tempObject.getId() == ID.RockBall || tempObject.getId() == ID.FluxBall){
 				if (getBounds().intersects(tempObject.getBounds())){
 					health -= (int)((Ball)tempObject).getPower();
 					if (!((Ball)tempObject).infinitePierce){
 						handler.balls.remove(tempObject);
 					}
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 	@Override
@@ -61,12 +70,31 @@ public abstract class Enemy extends GameObject {
 			handler.enemies.remove(this);
 			handler.addObject(new Coin((int)x, (int)y));
 			hud.setScore(hud.getScore() + 1);
+			Game.spawner.decrementEnemiesLeft();
 		}
+		
 		collision();
+		//updateConditions(collision());
+		//ai.runStateUpdate(conditions);
+		//System.out.println(this.ai.getFX());
+		//readActiveEffects();
+	}
+	
+	//reads ai's effects
+	private void readActiveEffects()
+	{
+		this.effects = ai.getFX();
+		for (String s : this.effects)
+		{
+			if (s.equals("STRAIGHT_LINE_MOVE"))
+			{
+				move();
+			}
+		}
 	}
 	
 	//updates condition list based on current surroundings
-	private void updateConditions()
+	private void updateConditions(boolean takenDamage)
 	{
 		//health
 		if (this.health > 0)
@@ -82,10 +110,66 @@ public abstract class Enemy extends GameObject {
 			{
 				this.conditions.remove("HAS_HEALTH");
 			}
-			this.conditions.add("NO_HEALTH");
+			if (!this.conditions.contains("NO_HEALTH"))
+			{
+				this.conditions.add("NO_HEALTH");
+			}
 		}
 		
 		//distance to player
+		double xDiff = Game.player.getX() - x;
+		double yDiff = Game.player.getY() - y;
+		double dist = Math.sqrt((xDiff * xDiff) + (yDiff * yDiff));
+		if (dist <= 40.0) //attack distance
+		{
+			if (!this.conditions.contains("PLAYER_SWIPE_RANGE"))
+			{
+				this.conditions.add("PLAYER_SWIPE_RANGE");
+			}
+		}
+		else if (dist <= 1000.0) //in range
+		{
+			if (!this.conditions.contains("PLAYER_IN_RANGE")) //adds precon
+			{
+				this.conditions.add("PLAYER_IN_RANGE");
+			}
+			if (this.conditions.contains("PLAYER_OUT_RANGE")) //deletes unrelative precons
+			{
+				this.conditions.remove("PLAYER_OUT_RANGE");
+			}
+			if (this.conditions.contains("PLAYER_SWIPE_RANGE"))
+			{
+				this.conditions.remove("PLAYER_SWIPE_RANGE");
+			}
+		}
+		else //totally not in range like at all
+		{
+			if (!this.conditions.contains("PLAYER_OUT_RANGE")) //adds precon
+			{
+				this.conditions.add("PLAYER_OUT_RANGE");
+			}
+			if (this.conditions.contains("PLAYER_IN_RANGE")) //deletes unrelative precons
+			{
+				this.conditions.remove("PLAYER_IN_RANGE");
+			}
+			if (this.conditions.contains("PLAYER_SWIPE_RANGE"))
+			{
+				this.conditions.remove("PLAYER_SWIPE_RANGE");
+			}
+		}
+		
+		//conditions
+		if (takenDamage)
+		{
+			if (!this.conditions.contains("HIT")) //adds precon
+			{
+				this.conditions.add("HIT");
+			}
+			if (this.stunTimer <= 0  && this.conditions.contains("HIT"))
+			{
+				this.conditions.remove("HIT");
+			}
+		}
 	}
 	
 	public void move(){
@@ -100,6 +184,9 @@ public abstract class Enemy extends GameObject {
 			x += velX;
 			y += velY;
 		}
+		
+		x = Game.clamp(x, -1000, 2625);
+		y = Game.clamp(y, -1000, 1500);
 	}
 
 	@Override

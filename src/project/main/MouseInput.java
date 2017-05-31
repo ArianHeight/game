@@ -1,6 +1,5 @@
 package project.main;
 
-import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Random;

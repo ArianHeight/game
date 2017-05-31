@@ -56,7 +56,7 @@ public abstract class FSM
 		{
 			s.checkPrecon(activeConditions);
 		}
-		
+
 		//checks according to priority
 		for (int i = this.m_availibleStates.size() - 1; i >= 0; i--)
 		{
@@ -66,7 +66,7 @@ public abstract class FSM
 				this.m_activeEffects.clear(); //clears fx buffer
 				this.m_currentState = this.m_availibleStates.get(i); //sets current state
 				this.m_activeEffects = this.m_availibleStates.get(i).getFX(); //fills fx buffer
-				
+
 				return; //early return
 			}
 		}

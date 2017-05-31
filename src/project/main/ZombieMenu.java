@@ -9,11 +9,9 @@ import project.main.Game.STATE;
 
 public class ZombieMenu {
 	
-	private Game game;
 	//private Random r = new Random();
 	
-	public ZombieMenu(Game game){
-		this.game = game;
+	public ZombieMenu(){
 	}
 
 	public void tick(){
@@ -21,7 +19,7 @@ public class ZombieMenu {
 	}
 	
 	public void render (Graphics g){
-		if (game.gameState == STATE.ZombieMenu){
+		if (Game.gameState == STATE.ZombieMenu){
 			Font font1 = new Font("arial", 1, 50);
 			Font font2 = new Font("arial", 1, 30);
 			

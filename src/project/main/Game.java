@@ -20,13 +20,14 @@ public class Game extends Canvas implements Runnable{
 	
 	public static Handler handler;
 	private HUD hud;
-	private Spawner spawner;
+	public static Spawner spawner;
 	
 	private Menu menu;
 	private BallsMenu bm;
 	private ZombieMenu zm;
 	private UpgradeStore us;
 	private End e;
+	private static int enemiesLost = 0;
 	
 	public static ID currentBall;
 	
@@ -54,9 +55,9 @@ public class Game extends Canvas implements Runnable{
 		player = new Player(WIDTH/2, HEIGHT/2, hud);
 		camera = new Camera(player);
 		player.updateWindowCoordinates();
-		menu = new Menu(this);
+		menu = new Menu();
 		bm = new BallsMenu();
-		zm = new ZombieMenu(this);
+		zm = new ZombieMenu();
 		us = new UpgradeStore(hud);
 		
 		spawner = new Spawner(handler, hud);
@@ -92,7 +93,6 @@ public class Game extends Canvas implements Runnable{
 	
 	public void run()
     {
-		
 		this.requestFocus(); // need not to click on window to focus
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
@@ -104,6 +104,7 @@ public class Game extends Canvas implements Runnable{
         	long now = System.nanoTime();
         	delta += (now - lastTime) / ns;
         	lastTime = now;
+        	
         	while (delta >=1)
         	{
         		tick();
@@ -236,14 +237,12 @@ public class Game extends Canvas implements Runnable{
     	else if (currentBall == ID.RockBall){
     		handler.addObject(new RockBall(x, y, xVal, yVal, p));
     	}
-    	/*
     	else if (currentBall == ID.LifeBall){
-    		handler.addObject(new LifeBall(x, y, xVal, yVal, p));
+    		//handler.addObject(new LifeBall(x, y, xVal, yVal, p));
     	}
     	else if (currentBall == ID.FluxBall){
     		handler.addObject(new FluxBall(x, y, xVal, yVal, p));
     	}
-    	*/
     }
     
     public static void generateBall(double x, double y, double angle, Player p){
@@ -256,16 +255,21 @@ public class Game extends Canvas implements Runnable{
     	else if (currentBall == ID.RockBall){
     		handler.addObject(new RockBall(x, y, angle, p));
     	}
-    	/*
+    	
     	else if (currentBall == ID.LifeBall){
-    		handler.addObject(new LifeBall(x, y, xVal, yVal, p));
+    	//	handler.addObject(new LifeBall(x, y, angle, p));
     	}
     	else if (currentBall == ID.FluxBall){
-    		handler.addObject(new FluxBall(x, y, xVal, yVal, p));
+    		handler.addObject(new FluxBall(x, y, angle, p));
     	}
-    	*/
     }
  
+    public static int getEnemiesLost(){
+    	return enemiesLost;
+    }
+    
+    public static void incrementEnemiesLost(){ enemiesLost ++; }
+    
  	public static void main (String [] args){
 		new Game();
     }
