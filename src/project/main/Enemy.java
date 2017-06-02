@@ -1,6 +1,7 @@
 package project.main;
 import simpleAI.*;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -18,10 +19,11 @@ public abstract class Enemy extends GameObject {
 	protected FSM ai;
 	
 	private Handler handler;
-	private int health;
+	private int MAX_HEALTH;
+	protected int health;
 	private HUD hud;
 	
-	private int stunTimer;
+	protected int stunTimer;
 	
 	public Enemy(int x, int y, Handler handler, HUD hud) {
 		super(x, y);
@@ -33,7 +35,7 @@ public abstract class Enemy extends GameObject {
 		vel = Math.sqrt(velX * velX + velY * velY);
 		
 		this.conditions = new ArrayList<String>();
-		this.ai = new simpleChaser();
+		this.ai = new SimpleChaser();
 		this.effects = this.ai.getFX();
 	}
 	
@@ -45,11 +47,11 @@ public abstract class Enemy extends GameObject {
 		return new Rectangle((int)winX, (int)winY, 32, 32);
 	}
 	
-	private boolean collision(){
+	protected boolean collision(){
 		for (int i = handler.balls.size() - 1; i >= 0; i--){
 			Ball tempObject = handler.balls.get(i);
 			
-			if (tempObject.getId() == ID.WaterBall || tempObject.getId() == ID.FireBall || tempObject.getId() == ID.RockBall || tempObject.getId() == ID.FluxBall){
+			if (tempObject.getId() == ID.WaterBall || tempObject.getId() == ID.FireBall || tempObject.getId() == ID.RockBall || tempObject.getId() == ID.FluxBall || tempObject.getId() == ID.LifeBall || tempObject.getId() == ID.MysteryBall){
 				if (getBounds().intersects(tempObject.getBounds())){
 					health -= (int)((Ball)tempObject).getPower();
 					if (!((Ball)tempObject).infinitePierce){
@@ -64,113 +66,19 @@ public abstract class Enemy extends GameObject {
 
 	@Override
 	public void tick() {
-		move();
-		
 		if (health <= 0){
 			handler.enemies.remove(this);
 			handler.addObject(new Coin((int)x, (int)y));
 			hud.setScore(hud.getScore() + 1);
 			Game.spawner.decrementEnemiesLeft();
 		}
-		
-		collision();
-		//updateConditions(collision());
-		//ai.runStateUpdate(conditions);
-		//System.out.println(this.ai.getFX());
-		//readActiveEffects();
 	}
 	
 	//reads ai's effects
-	private void readActiveEffects()
-	{
-		this.effects = ai.getFX();
-		for (String s : this.effects)
-		{
-			if (s.equals("STRAIGHT_LINE_MOVE"))
-			{
-				move();
-			}
-		}
-	}
+	//protected abstract void readActiveEffects();
 	
 	//updates condition list based on current surroundings
-	private void updateConditions(boolean takenDamage)
-	{
-		//health
-		if (this.health > 0)
-		{
-			if (!this.conditions.contains("HAS_HEALTH"))
-			{
-				this.conditions.add("HAS_HEALTH");
-			}
-		}
-		else
-		{
-			if (this.conditions.contains("HAS_HEALTH"))
-			{
-				this.conditions.remove("HAS_HEALTH");
-			}
-			if (!this.conditions.contains("NO_HEALTH"))
-			{
-				this.conditions.add("NO_HEALTH");
-			}
-		}
-		
-		//distance to player
-		double xDiff = Game.player.getX() - x;
-		double yDiff = Game.player.getY() - y;
-		double dist = Math.sqrt((xDiff * xDiff) + (yDiff * yDiff));
-		if (dist <= 40.0) //attack distance
-		{
-			if (!this.conditions.contains("PLAYER_SWIPE_RANGE"))
-			{
-				this.conditions.add("PLAYER_SWIPE_RANGE");
-			}
-		}
-		else if (dist <= 1000.0) //in range
-		{
-			if (!this.conditions.contains("PLAYER_IN_RANGE")) //adds precon
-			{
-				this.conditions.add("PLAYER_IN_RANGE");
-			}
-			if (this.conditions.contains("PLAYER_OUT_RANGE")) //deletes unrelative precons
-			{
-				this.conditions.remove("PLAYER_OUT_RANGE");
-			}
-			if (this.conditions.contains("PLAYER_SWIPE_RANGE"))
-			{
-				this.conditions.remove("PLAYER_SWIPE_RANGE");
-			}
-		}
-		else //totally not in range like at all
-		{
-			if (!this.conditions.contains("PLAYER_OUT_RANGE")) //adds precon
-			{
-				this.conditions.add("PLAYER_OUT_RANGE");
-			}
-			if (this.conditions.contains("PLAYER_IN_RANGE")) //deletes unrelative precons
-			{
-				this.conditions.remove("PLAYER_IN_RANGE");
-			}
-			if (this.conditions.contains("PLAYER_SWIPE_RANGE"))
-			{
-				this.conditions.remove("PLAYER_SWIPE_RANGE");
-			}
-		}
-		
-		//conditions
-		if (takenDamage)
-		{
-			if (!this.conditions.contains("HIT")) //adds precon
-			{
-				this.conditions.add("HIT");
-			}
-			if (this.stunTimer <= 0  && this.conditions.contains("HIT"))
-			{
-				this.conditions.remove("HIT");
-			}
-		}
-	}
+	//protected abstract void updateConditions(boolean takenDamage);
 	
 	public void move(){
 		double xDiff = Game.player.getX() - x;
@@ -191,15 +99,28 @@ public abstract class Enemy extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
+		/*
 		Image img = new ImageIcon(this.getClass().getResource("/Zombie.png")).getImage();
 		//Camera c = Game.camera;
 		updateWindowCoordinates();
 		//g.drawImage(img, (int)(x - c.X + Game.WIDTH / 2), (int)(y - c.Y + Game.HEIGHT / 2), (int)(x + 32 - c.X + Game.WIDTH / 2), (int)(y + 32 - c.Y + Game.HEIGHT / 2), 0, 0, 32, 32, null);
 		g.drawImage(img, (int)winX, (int)winY, (int)winX + 32, (int)winY + 32, 0, 0, 32, 32, null);
+		*/
+		// draw health bar
+		
+		g.setColor(Color.gray);
+		g.fillRect((int)winX, (int)winY - 10, (int)32, 6);
+		// changes color of health as it decreases from green (max health) to red (min health)
+		g.setColor(new Color(0, 255, 0));
+		g.fillRect((int)winX, (int)winY - 10, (int)(health * 1.0 / MAX_HEALTH * 32), 6);
+		g.setColor(Color.white);
+		g.drawRect((int)winX, (int)winY - 10, (int)32, 6);
 	}
 	
 	public void setVelX(double velX){ this.velX = velX;	}
 	public void setVelY(double velY){ this.velY = velY;	}
 	public void setHealth(int health){ this.health = health; }
 	public int getHealth(){ return health; }
+	public void setMaxHealth(int health){ this.MAX_HEALTH = health; }
+	public int getMaxHealth(){ return MAX_HEALTH; }
 }

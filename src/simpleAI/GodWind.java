@@ -6,9 +6,9 @@ import java.util.List;
 /*
  * simple ai that chases target in straight line
  */
-public class SimpleChaser extends FSM
+public class GodWind extends FSM
 {
-	public SimpleChaser()
+	public GodWind()
 	{
 		this.setBeginningState();
 	}
@@ -30,7 +30,9 @@ public class SimpleChaser extends FSM
 		
 		state attacked = new state("ATTACKING");
 		attacked.addPrecon("PLAYER_SWIPE_RANGE");
-		attacked.addFX("FLAG_DMG_PLAYER");
+		attacked.addFX("FLAG_EXPLODE");
+		attacked.addFX("DELETE_ENTITY");
+		attacked.addFX("ADD_COIN");
 		
 		state dead = new state("DEADED");
 		dead.addPrecon("NO_HEALTH");

@@ -12,5 +12,6 @@ public enum ID {
 	FireBall(),
 	RockBall(),
 	LifeBall(),
-	FluxBall();
+	FluxBall(),
+	MysteryBall();
 }

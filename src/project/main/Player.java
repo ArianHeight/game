@@ -11,12 +11,15 @@ public class Player extends GameObject{
 	protected double vel;
 
 	private HUD hud;
+	
+	private int spiralCounter;
 	 
 	public Player(int x, int y, HUD hud) {
 		super(x, y);
 		id = ID.Player;
 		this.hud = hud;
 		vel = 5;
+		spiralCounter = 0;
 	}
 	
 	public Rectangle getBounds(){
@@ -32,6 +35,7 @@ public class Player extends GameObject{
 		if (isMoving){
 			x += velX;
 			y += velY;
+			spiralCounter--;
 		}
 		
 		  
@@ -65,10 +69,13 @@ public class Player extends GameObject{
 	}
 	
 	public void spiral(){
-		//System.out.println(x + " " + y);
+		if (spiralCounter > 0){
+			return;
+		}
 		for (int i = 0; i < 360; i += 10){
 			Game.generateBall(x + 16, y + 16, i * 2 * Math.PI / 360, this);
 		}
+		spiralCounter = 1;
 	}
 	
 	public void freeze(){
@@ -104,5 +111,9 @@ public class Player extends GameObject{
 		this.vel = vel;
 		velX = velX * vel / this.vel;
 		velY = velY * vel / this.vel;
+	}
+	
+	public int getSpiralCounter(){
+		return spiralCounter;
 	}
 }

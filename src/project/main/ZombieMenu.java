@@ -9,15 +9,6 @@ import project.main.Game.STATE;
 
 public class ZombieMenu {
 	
-	//private Random r = new Random();
-	
-	public ZombieMenu(){
-	}
-
-	public void tick(){
-		
-	}
-	
 	public void render (Graphics g){
 		if (Game.gameState == STATE.ZombieMenu){
 			Font font1 = new Font("arial", 1, 50);

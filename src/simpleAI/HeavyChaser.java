@@ -6,9 +6,9 @@ import java.util.List;
 /*
  * simple ai that chases target in straight line
  */
-public class SimpleChaser extends FSM
+public class HeavyChaser extends FSM
 {
-	public SimpleChaser()
+	public HeavyChaser()
 	{
 		this.setBeginningState();
 	}
@@ -24,10 +24,6 @@ public class SimpleChaser extends FSM
 		chase.addPrecon("PLAYER_IN_RANGE");
 		chase.addFX("STRAIGHT_LINE_MOVE");
 		
-		state stunned = new state("STUNNED");
-		stunned.addPrecon("HIT");
-		stunned.addFX("STUN_LOCK");
-		
 		state attacked = new state("ATTACKING");
 		attacked.addPrecon("PLAYER_SWIPE_RANGE");
 		attacked.addFX("FLAG_DMG_PLAYER");
@@ -40,9 +36,8 @@ public class SimpleChaser extends FSM
 		//adding states priority is higher the larger the index
 		this.m_availibleStates.add(idle); //idle state 0
 		this.m_availibleStates.add(chase); //chasing player around 1
-		this.m_availibleStates.add(stunned); //stun state 2
-		this.m_availibleStates.add(attacked); //3
-		this.m_availibleStates.add(dead); //4
+		this.m_availibleStates.add(attacked); //4
+		this.m_availibleStates.add(dead); //5
 		
 		this.m_currentState = this.m_availibleStates.get(0); //defaults to idle state
 	}

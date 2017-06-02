@@ -238,7 +238,7 @@ public class Game extends Canvas implements Runnable{
     		handler.addObject(new RockBall(x, y, xVal, yVal, p));
     	}
     	else if (currentBall == ID.LifeBall){
-    		//handler.addObject(new LifeBall(x, y, xVal, yVal, p));
+    		handler.addObject(new LifeBall(x, y, xVal, yVal, p));
     	}
     	else if (currentBall == ID.FluxBall){
     		handler.addObject(new FluxBall(x, y, xVal, yVal, p));
@@ -257,7 +257,7 @@ public class Game extends Canvas implements Runnable{
     	}
     	
     	else if (currentBall == ID.LifeBall){
-    	//	handler.addObject(new LifeBall(x, y, angle, p));
+    		handler.addObject(new LifeBall(x, y, angle, p));
     	}
     	else if (currentBall == ID.FluxBall){
     		handler.addObject(new FluxBall(x, y, angle, p));

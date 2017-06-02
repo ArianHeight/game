@@ -62,30 +62,6 @@ public class Spawner {
 				}
 			}
 		}
-
-		/*
-		if (time % spawnCounter == 0 && hud.getLevel() < 15){	
-			
-			//handler.addObject(new Zombie(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Zombie, handler, hud));
-			
-			// spawns zombies at border of window
-			handler.addObject(new Zombie(x, y, handler, hud));
-		}
-		if (time % spawnCounter == 0 && hud.getLevel() >= 10 && hud.getLevel() < 20){
-			handler.addObject(new ZombieThrower(x, y, handler, hud));
-		}
-		if (time % spawnCounter == 0 && hud.getLevel() >= 20){
-			handler.addObject(new ZombieKnight(x, y, handler, hud));
-		}
-		
-		
-		if (time % 200 == 0){
-			hud.setLevel(hud.getLevel() + 1);
-		}
-		if (hud.getLevel() % 5 == 0 && time % 200 == 0 && spawnCounter >= 15){
-			spawnCounter = (int)(spawnCounter * 0.8);
-		}
-		*/
 	}
 	
 	public int getEnemiesLeft(){

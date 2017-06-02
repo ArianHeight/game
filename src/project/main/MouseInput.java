@@ -9,16 +9,11 @@ import project.main.Game.STATE;
 public class MouseInput extends MouseAdapter {
 	
 	private Game game;
-	private Handler handler;
-	private HUD hud;
-	private Random r = new Random();
 	private Player player;
 	
 	public MouseInput(Game game, Handler handler, Player p, HUD hud){
 		this.game = game;
-		this.handler = handler;
 		this.player = p;
-		this.hud = hud;
 	}
 	
 	public void mousePressed(MouseEvent e){
@@ -45,7 +40,7 @@ public class MouseInput extends MouseAdapter {
 		}
 		// clicks back
 		if (Game.gameState == STATE.Help){
-			if (mouseOver(mx, my, Game.WIDTH / 2 - 100, 350, 200, 64)){
+			if (mouseOver(mx, my, Game.WIDTH / 2 - 100, 580, 200, 64)){
 				Game.gameState = STATE.Menu;
 				return;
 			}

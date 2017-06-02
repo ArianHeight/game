@@ -6,9 +6,9 @@ import java.util.List;
 /*
  * simple ai that chases target in straight line
  */
-public class SimpleChaser extends FSM
+public class SimpleThrower extends FSM
 {
-	public SimpleChaser()
+	public SimpleThrower()
 	{
 		this.setBeginningState();
 	}
@@ -23,6 +23,16 @@ public class SimpleChaser extends FSM
 		state chase = new state("CHASE");
 		chase.addPrecon("PLAYER_IN_RANGE");
 		chase.addFX("STRAIGHT_LINE_MOVE");
+		chase.addFX("THROW");
+		
+		state run = new state("RUN");
+		run.addPrecon("PLAYER_TOO_CLOSE");
+		run.addFX("BACK_UP");
+		chase.addFX("THROW");
+		
+		state dodge = new state("DODGE");
+		dodge.addPrecon("PROJECTILLE_IN_RANGE");
+		dodge.addFX("DODGE");
 		
 		state stunned = new state("STUNNED");
 		stunned.addPrecon("HIT");
@@ -30,7 +40,7 @@ public class SimpleChaser extends FSM
 		
 		state attacked = new state("ATTACKING");
 		attacked.addPrecon("PLAYER_SWIPE_RANGE");
-		attacked.addFX("FLAG_DMG_PLAYER");
+		attacked.addFX("THROW");
 		
 		state dead = new state("DEADED");
 		dead.addPrecon("NO_HEALTH");
@@ -40,9 +50,11 @@ public class SimpleChaser extends FSM
 		//adding states priority is higher the larger the index
 		this.m_availibleStates.add(idle); //idle state 0
 		this.m_availibleStates.add(chase); //chasing player around 1
-		this.m_availibleStates.add(stunned); //stun state 2
-		this.m_availibleStates.add(attacked); //3
-		this.m_availibleStates.add(dead); //4
+		this.m_availibleStates.add(run); //running from player 2
+		this.m_availibleStates.add(dodge); //dodging projectilles 3
+		this.m_availibleStates.add(stunned); //stun state 4
+		this.m_availibleStates.add(attacked); //5
+		this.m_availibleStates.add(dead); //6
 		
 		this.m_currentState = this.m_availibleStates.get(0); //defaults to idle state
 	}

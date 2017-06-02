@@ -9,50 +9,7 @@ import project.main.Game.STATE;
 
 
 public class Menu extends MouseAdapter {
-	//private Random r = new Random();
-	
-	public Menu(){
-	}
-	/*
-	public void mousePressed(MouseEvent e){
-		int mx = e.getX();
-		int my = e.getY();
-		
-		if (game.gameState == STATE.Menu){
-			// clicks play
-			if (mouseOver(mx, my, Game.WIDTH / 2 - 100, 150, 200, 64)){
-				game.gameState = STATE.Game;
-				for (int i = 0; i < 10; i++){
-					System.out.println("Enemy aded");
-		   			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.BasicEnemy, handler));
-		  		}
-			}
-			// clicks help
-			if (mouseOver(mx, my, Game.WIDTH / 2 - 100, 250, 200, 64)){
-				game.gameState = STATE.Help;
-			}
-		}
-		// clicks back
-		if (game.gameState == STATE.Help){
-			if (mouseOver(mx, my, Game.WIDTH / 2 - 100, 350, 200, 64)){
-				game.gameState = STATE.Menu;
-				return;
-			}
-		}
-	}
-	
-	public void mouseReleased(MouseEvent e){
-	}
-	
-	private boolean mouseOver(int mx, int my, int x, int y, int width, int height){
-		return (mx > x && mx < x + width && my > y && my < y + height);
-	}
-	
-	*/
-	public void tick(){
-		
-	}
-	
+
 	public void render (Graphics g){
 		if (Game.gameState == STATE.Menu){
 			Font font1 = new Font("arial", 1, 50);
@@ -91,7 +48,7 @@ public class Menu extends MouseAdapter {
 			g.setFont(font3);
 			g.drawString("Use UDLR keys to move player. \nClick to shoot.", 400, 200);
 			g.setFont(font2);
-			g.drawRect(Game.WIDTH / 2 - 100, 350, 200, 64);
+			g.drawRect(Game.WIDTH / 2 - 100, 580, 200, 64);
 			g.drawString("Back", 600, 620);
 		}
 	}	
