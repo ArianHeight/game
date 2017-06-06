@@ -11,6 +11,7 @@ public class Player extends GameObject{
 	protected double vel;
 
 	private HUD hud;
+	private Graphics graphic;
 	
 	private int spiralCounter;
 	 
@@ -38,10 +39,6 @@ public class Player extends GameObject{
 			spiralCounter--;
 		}
 		
-		  
-		x = Game.clamp(x, -1000, 2625);
-		y = Game.clamp(y, -1000, 1500);
-		
 		collision();
 		
 	}
@@ -50,9 +47,26 @@ public class Player extends GameObject{
 		for (int i = Game.handler.enemies.size() - 1; i >= 0; i--){
 			Enemy tempObject = Game.handler.enemies.get(i);
 			
-			if (tempObject.getId() == ID.Zombie || tempObject.getId() == ID.ZombieKnight || tempObject.getId() == ID.ZombieThrower){
+			if (tempObject.getId() == ID.ZombieKnight || tempObject.getId() == ID.ZombieThrower){
 				if (getBounds().intersects(tempObject.getBounds())){
 					HUD.HEALTH -= 1;
+				}
+			}
+			else if (tempObject.getId() == ID.Zombie)
+			{
+				if (tempObject.getIsAttacking())
+				{
+					if (getBounds().intersects(tempObject.getAtkBounds()))
+					{
+						HUD.HEALTH -= tempObject.getATKdmg();
+						tempObject.getAtkBounds();
+					}
+					if (graphic != null)
+					{
+						Rectangle r = tempObject.getAtkBounds();
+						Image swoosh = new ImageIcon(this.getClass().getResource("/swoosh.png")).getImage();
+						graphic.drawImage(swoosh, (int)r.getMinX(), (int)r.getMinY(), (int)r.getWidth(), (int)r.getHeight(), 0, 0, 16, 16, null);
+					}
 				}
 			}
 		}
@@ -88,6 +102,7 @@ public class Player extends GameObject{
 	
 	@Override
 	public void render(Graphics g) {
+		graphic = g;
 		updateWindowCoordinates();
 		//int pX = (int)(this.x - Game.camera.getX()) + (Game.WIDTH / 2) - 16;
 		//int pY = (int)(this.y - Game.camera.getY()) + (Game.HEIGHT / 2) - 16;
@@ -96,6 +111,35 @@ public class Player extends GameObject{
 		Image img = new ImageIcon(this.getClass().getResource("/player.png")).getImage();
 		// draw player
 		g.drawImage(img, (int)winX, (int)winY, (int)winX + 32, (int)winY + 32, 0, 0, 32, 32, null);
+		
+		/*
+		for (int i = Game.handler.enemies.size() - 1; i >= 0; i--){
+			Enemy tempObject = Game.handler.enemies.get(i);
+			/*
+			if (tempObject.getId() == ID.ZombieKnight || tempObject.getId() == ID.ZombieThrower){
+				if (getBounds().intersects(tempObject.getBounds())){
+					HUD.HEALTH -= 1;
+				}
+			}
+			
+			if (tempObject.getId() == ID.Zombie)
+			{
+				if (tempObject.getIsAttacking() && getBounds().intersects(tempObject.getAtkBounds()))
+				{
+					System.out.println("df:");
+					Rectangle r = tempObject.getAtkBounds();
+					Image swoosh = new ImageIcon(this.getClass().getResource("/swoosh.png")).getImage();
+					g.drawImage(swoosh, (int)r.getX(), (int)r.getY(), (int)(r.getX() + r.getWidth()), (int)(r.getY() + r.getHeight()), 0, 0, 16, 16, null);
+				}
+			}
+			
+		}
+		*/
+		/*
+		if(isAttacked()){
+			Image swoosh = new ImageIcon(this.getClass().getResource("/swoosh.png")).getImage();
+			g.drawImage(swoosh, (int)x, (int)y, (int)x+32, (int)y+32, 0, 0, 16, 16, null);
+		}*/
 	}
 	
 	// accessor methods

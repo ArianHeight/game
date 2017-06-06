@@ -1,29 +1,46 @@
 package project.main;
-import simpleAI.*;
-
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
+import project.main.Game.STATE;
+import simpleAI.FSM;
+import simpleAI.SimpleChaser;
 
 public abstract class Enemy extends GameObject {
+	//attributes
 	protected double velX, velY;
 	protected double vel;
+	private int MAX_HEALTH;
+	protected int health;
+	protected int atkDMG;
 	
+	//in prospect to player
+	protected double distToPlayer;
+	protected double xDiff;
+	protected double yDiff;
+	protected boolean isAttacking = false;
+	
+	//for ai
 	protected List<String> conditions;
 	protected List<String> effects;
 	protected FSM ai;
 	
+	//system
 	private Handler handler;
-	private int MAX_HEALTH;
-	protected int health;
 	private HUD hud;
 	
-	protected int stunTimer;
+	//timers
+	protected double stunX = 0;
+	protected double stunY = 0;
+	protected int stunTimer = -1;
+	protected int stunMaxTime = 0;
+	protected int pre_atkTimer = -1;
+	protected int pre_atkMaxTime;
+	protected int atkCooldownTimer = -1; //cooldown plus pretimer equals total seconds per attack(frames per attack, each frame being 60fps)
+	protected int atkCooldownMaxTime;
 	
 	public Enemy(int x, int y, Handler handler, HUD hud) {
 		super(x, y);
@@ -40,20 +57,42 @@ public abstract class Enemy extends GameObject {
 	}
 	
 	public Rectangle getBounds(){
-		/*
-		Camera c = Game.camera;
-		return new Rectangle((int)(x - c.X), (int)(y - c.Y), 32, 32);
-		*/
 		return new Rectangle((int)winX, (int)winY, 32, 32);
+	}
+	
+	//name says all
+	protected void updateDistToPlayer()
+	{
+		//distance to player
+		xDiff = Game.player.getX() - x;
+		yDiff = Game.player.getY() - y;
+		distToPlayer = Math.sqrt((xDiff * xDiff) + (yDiff * yDiff));
 	}
 	
 	protected boolean collision(){
 		for (int i = handler.balls.size() - 1; i >= 0; i--){
 			Ball tempObject = handler.balls.get(i);
-			
-			if (tempObject.getId() == ID.WaterBall || tempObject.getId() == ID.FireBall || tempObject.getId() == ID.RockBall || tempObject.getId() == ID.FluxBall || tempObject.getId() == ID.LifeBall || tempObject.getId() == ID.MysteryBall){
+			if (tempObject == null || Game.gameState != STATE.Game){
+				return false;
+			}
+			if (tempObject.getId() == ID.WaterBall || tempObject.getId() == ID.FireBall || tempObject.getId() == ID.RockBall || tempObject.getId() == ID.FluxBall || tempObject.getId() == ID.LifeBall || tempObject.getId() == ID.CrystalBall || tempObject.getId() == ID.MysteryBall){
 				if (getBounds().intersects(tempObject.getBounds())){
+					
+					if (tempObject.getId() == ID.LifeBall){
+						int h = (int)(((Ball)tempObject).getPower() * Ball.damageMultiplier / 3);
+						h = Math.min(health, h);
+						h = Math.max(h, 0);
+						
+						HUD.HEALTH += h;
+					}
 					health -= (int)((Ball)tempObject).getPower();
+					stunX = (int)tempObject.getVelX();
+					stunY = (int)tempObject.getVelY();
+					stunTimer = stunMaxTime;
+
+					if (tempObject.getId() == ID.CrystalBall){
+						handler.addObject(new Explosion((int)tempObject.getX(), (int)tempObject.getY(), handler, hud));
+					}
 					if (!((Ball)tempObject).infinitePierce){
 						handler.balls.remove(tempObject);
 					}
@@ -66,12 +105,18 @@ public abstract class Enemy extends GameObject {
 
 	@Override
 	public void tick() {
+		updateDistToPlayer();
 		if (health <= 0){
 			handler.enemies.remove(this);
 			handler.addObject(new Coin((int)x, (int)y));
 			hud.setScore(hud.getScore() + 1);
 			Game.spawner.decrementEnemiesLeft();
 		}
+	}
+	
+	public Rectangle getAtkBounds()
+	{
+		return getBounds();
 	}
 	
 	//reads ai's effects
@@ -92,9 +137,6 @@ public abstract class Enemy extends GameObject {
 			x += velX;
 			y += velY;
 		}
-		
-		x = Game.clamp(x, -1000, 2625);
-		y = Game.clamp(y, -1000, 1500);
 	}
 
 	@Override
@@ -117,10 +159,14 @@ public abstract class Enemy extends GameObject {
 		g.drawRect((int)winX, (int)winY - 10, (int)32, 6);
 	}
 	
+	public abstract void attack();
+	
 	public void setVelX(double velX){ this.velX = velX;	}
 	public void setVelY(double velY){ this.velY = velY;	}
 	public void setHealth(int health){ this.health = health; }
 	public int getHealth(){ return health; }
 	public void setMaxHealth(int health){ this.MAX_HEALTH = health; }
 	public int getMaxHealth(){ return MAX_HEALTH; }
+	public boolean getIsAttacking() { return isAttacking; }
+	public int getATKdmg() { return atkDMG; }
 }

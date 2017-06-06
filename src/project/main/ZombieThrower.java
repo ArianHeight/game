@@ -21,6 +21,11 @@ public class ZombieThrower extends Enemy {
 		super.collision();
 	}
 	
+	public void attack()
+	{
+		
+	}
+	
 	public void render(Graphics g) {
 		Image img = new ImageIcon(this.getClass().getResource("/ZombieThrower.png")).getImage();
 		updateWindowCoordinates();

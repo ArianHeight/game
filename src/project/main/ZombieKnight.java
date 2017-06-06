@@ -21,6 +21,11 @@ public class ZombieKnight extends Enemy {
 		super.collision();
 	}
 	
+	public void attack()
+	{
+		
+	}
+	
 	public void render(Graphics g) {
 		Image img = new ImageIcon(this.getClass().getResource("/ZombieKnight.png")).getImage();
 		//Camera c = Game.camera;

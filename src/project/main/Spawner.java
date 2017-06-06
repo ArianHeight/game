@@ -17,7 +17,7 @@ public class Spawner {
 	public int [] enemyCoordinates(){
 		int x, y;
 		int seed = r.nextInt(4);
-		
+
 		if (seed == 0){
 			x = (int)(Game.camera.X - Game.WIDTH / 2) + r.nextInt(Game.WIDTH);
 			y = (int)(Game.camera.Y - Game.HEIGHT / 2);
@@ -34,10 +34,17 @@ public class Spawner {
 			x = (int)(Game.camera.X + Game.WIDTH / 2);
 			y = (int)(Game.camera.Y - Game.HEIGHT / 2) + r.nextInt(Game.HEIGHT);
 		}
+		
+		
+		if (hud.getLevel() == 1){
+			x += Game.WIDTH / 2 - 128;
+			y += Game.HEIGHT / 2 - 72;
+		}
+		
 		return new int [] {x, y};
 	}
 	
-	public void tick(){		
+	public void tick(){	
 		if (numberOfEnemies == 0){
 			hud.setLevel(hud.getLevel() + 1);
 			if (hud.getLevel() < 15){
@@ -55,7 +62,7 @@ public class Spawner {
 				}
 			}
 			if (hud.getLevel() >= 1){
-				for (int i = 0; i < 2 * (hud.getLevel() - 1); i++){
+				for (int i = 0; i < 20 * (hud.getLevel() - 1); i++){
 					int [] coord = enemyCoordinates();
 					handler.addObject(new ZombieKnight(coord[0], coord[1], handler, hud));
 					numberOfEnemies ++;

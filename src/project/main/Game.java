@@ -7,6 +7,12 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.ImageIcon;
 
+/**
+ * 
+ * @author Edmond Xue, Sean Wang
+ *
+ */
+
 public class Game extends Canvas implements Runnable{
 
 	private static final long serialVersionUID = 1550691097823471818L;
@@ -27,7 +33,7 @@ public class Game extends Canvas implements Runnable{
 	private ZombieMenu zm;
 	private UpgradeStore us;
 	private End e;
-	private static int enemiesLost = 0;
+	private ResetButton reset;
 	
 	public static ID currentBall;
 	
@@ -48,7 +54,7 @@ public class Game extends Canvas implements Runnable{
 	
  
 	public Game(){
-		currentBall = ID.FireBall;
+		currentBall = ID.WaterBall;
 		handler = new Handler();
 		hud = new HUD();
 		
@@ -59,12 +65,14 @@ public class Game extends Canvas implements Runnable{
 		bm = new BallsMenu();
 		zm = new ZombieMenu();
 		us = new UpgradeStore(hud);
+		reset = new ResetButton(this);
 		
 		spawner = new Spawner(handler, hud);
 		
 		mi = new MouseInput(this, handler, player, hud);
 		this.addMouseListener(mi);
 		this.addMouseListener(us);
+		this.addMouseListener(reset);
 		this.addKeyListener(new KeyboardInput());
 		new Window(WIDTH, HEIGHT, "Zombie Shooter", this);
   
@@ -90,7 +98,6 @@ public class Game extends Canvas implements Runnable{
 		}
 	}
 	
-	
 	public void run()
     {
 		this.requestFocus(); // need not to click on window to focus
@@ -99,30 +106,33 @@ public class Game extends Canvas implements Runnable{
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
         long timer = System.currentTimeMillis();
+        //int frames = 0;
         while(running)
         {
         	long now = System.nanoTime();
         	delta += (now - lastTime) / ns;
         	lastTime = now;
-        	
         	while (delta >=1)
-        	{
+            {
         		tick();
-        	    delta--;
-        	}
-        	if(running){
-        		render();
-        	}
+            	delta--;
+            }
+            if(running){
+            	render();
+            }
+
+            //frames++;
                             
             if (System.currentTimeMillis() - timer > 1000)
             {
             	timer += 1000;
+            	//System.out.println("FPS: " + frames);
+            	//frames = 0;
             }
         }
         stop();
-       
     }
- 
+	
 	private void tick(){
 		handler.tick();
 		player.tick();
@@ -139,7 +149,9 @@ public class Game extends Canvas implements Runnable{
 		}
 		*/
 	}
- 
+	
+	
+	
 	private void render(){
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null){
@@ -152,9 +164,8 @@ public class Game extends Canvas implements Runnable{
 		// creates the tiled background
 		Image img1 = new ImageIcon(this.getClass().getResource("/blueGrass.png")).getImage();
 		Image img2 = new ImageIcon(this.getClass().getResource("/stone.png")).getImage();
-
-		for (int i = -15; i <= 3*WIDTH / tileSizeX + 1; i++){
-			for (int j = -15; j <= 3*HEIGHT / tileSizeY + 1; j++){
+		for (int i = -1 + (int)(camera.getX() / tileSizeX); i <= 2*WIDTH / tileSizeX + 1 + (int)(camera.getX() / tileSizeX); i++){
+			for (int j = -1 + (int)(camera.getY() / tileSizeY); j <= 2*HEIGHT / tileSizeY + 1 + (int)(camera.getY() / tileSizeY); j++){
 				Image img;
 				if ((i + j) % 2 == 0){
 					img = img1;
@@ -163,16 +174,20 @@ public class Game extends Canvas implements Runnable{
 					img = img2;
 				}
 				g.drawImage(img, tileSizeX * (i-1) - (int)camera.getX(), tileSizeY * (j-1) - (int)camera.getY(), tileSizeX * i - (int)camera.getX(), tileSizeY * j - (int)camera.getY(), 0, 0, 32, 32, null);
+				//g.drawImage(img, tileSizeX * (i-1), tileSizeY * (j-1), tileSizeX * i, tileSizeY * j, 0, 0, 32, 32, null);
 			}
 		}
 		
 		player.render(g);
-		handler.render(g);
+		
 		if (gameState == STATE.Game){
-			hud.render(g);
+			//hud.render(g);
+			reset.render(g);
+			handler.running = true;
 		} 
 		else if (gameState == STATE.Menu || gameState == STATE.Help){
 			menu.render(g);
+			handler.running = false;
 		}
 		else if (gameState == STATE.BallsMenu){
 			bm.render(g);
@@ -182,9 +197,15 @@ public class Game extends Canvas implements Runnable{
 		}
 		if (gameState == STATE.End){
 			e.render(g);
-			handler.freezeObjects();
+			handler.running = false;
+			//handler.freezeObjects();
 		} else {
 			handler.unfreezeObjects();
+		}
+		
+		handler.render(g);
+		if (gameState == STATE.Game){
+			hud.render(g);
 		}
 		
 		if (gameState == STATE.UpgradeStore){
@@ -195,7 +216,6 @@ public class Game extends Canvas implements Runnable{
 			handler.unfreezeObjects();
 			player.unFreeze();
 		}
-		
 
 		g.dispose();
 		bs.show();
@@ -212,7 +232,8 @@ public class Game extends Canvas implements Runnable{
     }
     
     public void reset(){
-    	currentBall = ID.FireBall;
+    	currentBall = ID.WaterBall;
+    	handler.running = false;
     	handler.clearAll();
 		hud.clearAll();
 		
@@ -221,6 +242,7 @@ public class Game extends Canvas implements Runnable{
 		player.updateWindowCoordinates();
 		
 		gameState = STATE.Menu;
+		us.reset();
 		
 		spawner = new Spawner(handler, hud);
 		
@@ -243,6 +265,12 @@ public class Game extends Canvas implements Runnable{
     	else if (currentBall == ID.FluxBall){
     		handler.addObject(new FluxBall(x, y, xVal, yVal, p));
     	}
+    	else if (currentBall == ID.CrystalBall){
+    		handler.addObject(new CrystalBall(x, y, xVal, yVal, p));
+    	}
+    	else if (currentBall == ID.MysteryBall){
+    		handler.addObject(new MysteryBall(x, y, xVal, yVal, p));
+    	}
     }
     
     public static void generateBall(double x, double y, double angle, Player p){
@@ -255,20 +283,19 @@ public class Game extends Canvas implements Runnable{
     	else if (currentBall == ID.RockBall){
     		handler.addObject(new RockBall(x, y, angle, p));
     	}
-    	
     	else if (currentBall == ID.LifeBall){
     		handler.addObject(new LifeBall(x, y, angle, p));
     	}
     	else if (currentBall == ID.FluxBall){
     		handler.addObject(new FluxBall(x, y, angle, p));
     	}
+    	else if (currentBall == ID.CrystalBall){
+    		handler.addObject(new CrystalBall(x, y, angle, p));
+    	}
+    	else if (currentBall == ID.MysteryBall){
+    		handler.addObject(new MysteryBall(x, y, angle, p));
+    	}
     }
- 
-    public static int getEnemiesLost(){
-    	return enemiesLost;
-    }
-    
-    public static void incrementEnemiesLost(){ enemiesLost ++; }
     
  	public static void main (String [] args){
 		new Game();

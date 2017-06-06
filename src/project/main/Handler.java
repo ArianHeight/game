@@ -1,7 +1,7 @@
 package project.main;
 
 import java.awt.Graphics;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  * Handler
@@ -11,66 +11,138 @@ import java.util.LinkedList;
 
 public class Handler {
 	
-	LinkedList<Enemy> enemies = new LinkedList<Enemy>();
-	LinkedList<Ball> balls = new LinkedList<Ball>();
-	LinkedList<Collectible> collectibles = new LinkedList<Collectible>();
+	public boolean running = false;
+	
+	ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	ArrayList<Ball> balls = new ArrayList<Ball>();
+	ArrayList<Collectible> collectibles = new ArrayList<Collectible>();
+	ArrayList<Explosion> explosions = new ArrayList<Explosion>();
 	 
 	public void tick(){
+		if (!running){
+			return;
+		}
 		for (int i = enemies.size() - 1; i >= 0; i--){
+			if (i >= enemies.size()){
+				return;
+			}
+			if (enemies.get(i) == null){
+				return;
+			}
 			enemies.get(i).tick();
 		}
 		for (int i = balls.size() - 1; i >= 0; i--){
+			if (i >= balls.size()){
+				return;
+			}
+			if (balls.get(i) == null){
+				return;
+			}
 			balls.get(i).tick();
 		}
 		for (int i = collectibles.size() - 1; i >= 0; i--){
+			if (i >= collectibles.size()){
+				return;
+			}
+			if (collectibles.get(i) == null){
+				return;
+			}
 			collectibles.get(i).tick();
+		}
+		for (int i = explosions.size() - 1; i >= 0; i--){
+			if (i >= explosions.size()){
+				return;
+			}
+			if (explosions.get(i) == null){
+				return;
+			}
+			explosions.get(i).tick();
 		}
 	}
 	 
 	public void render(Graphics g){
+		if (!running){
+			return;
+		}
 		for (int i = enemies.size() - 1; i >= 0; i--){
+			if (i >= enemies.size()){
+				return;
+			}
+			if (enemies.get(i) == null){
+				return;
+			}
 			enemies.get(i).render(g);
 		}
 		for (int i = balls.size() - 1; i >= 0; i--){
+			if (i >= balls.size()){
+				return;
+			}
+			if (balls.get(i) == null){
+				return;
+			}
 			balls.get(i).render(g);
 		}
 		for (int i = collectibles.size() - 1; i >= 0; i--){
+			if (i >= collectibles.size()){
+				return;
+			}
+			if (collectibles.get(i) == null){
+				return;
+			}
 			collectibles.get(i).render(g);
+		}
+		for (int i = explosions.size() - 1; i >= 0; i--){
+			if (i >= explosions.size()){
+				return;
+			}
+			if (explosions.get(i) == null){
+				return;
+			}
+			explosions.get(i).render(g);
 		}
 	}
 	 
 	public void addObject(Enemy object){ this.enemies.add(object); }
 	public void addObject(Ball object){ this.balls.add(object); }
 	public void addObject(Collectible object){ this.collectibles.add(object); }
+	public void addObject(Explosion object){ this.explosions.add(object); }
 	
 	public void clearAll(){
 		clearEnemies();
 		clearBalls();
 		clearCollectibles();
+		clearExplosions();
 	}
 	
 	
 	public void clearEnemies(){ enemies.clear(); }
 	public void clearBalls(){ balls.clear(); }
 	public void clearCollectibles(){ collectibles.clear(); }
-	
+	public void clearExplosions(){ explosions.clear(); }
 
 	public void freezeObjects(){
 		for (Enemy e: enemies){
-			e.setMoving(false);
+			if (e != null){
+				e.setMoving(false);
+			}
 		}
 		for (Ball b: balls){
-			b.setMoving(false);
+			if (b != null){
+				b.setMoving(false);
+			}
 		}
 	}
 	
 	public void unfreezeObjects(){
 		for (Enemy e: enemies){
-			e.setMoving(true);
+			if (e != null){
+				e.setMoving(true);
+			}
 		}
 		for (Ball b: balls){
-			b.setMoving(true);
+			if (b != null){
+				b.setMoving(true);
+			}
 		}
 	}
-	
 }

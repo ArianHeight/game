@@ -31,7 +31,6 @@ public class state
 	public void addFX(String condition)
 	{
 		this.effects.add(condition);
-		System.out.println(this.effects);
 	}
 	
 	public void checkPrecon(List<String> activeConditions)

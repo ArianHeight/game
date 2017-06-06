@@ -7,6 +7,9 @@ import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
 public abstract class Ball extends GameObject {
+	public static double damageMultiplier = 1;
+	public static double speedMultiplier = 1;
+	
 	protected double velX, velY, vel;
 	private int power;
 	private int time;
@@ -24,8 +27,8 @@ public abstract class Ball extends GameObject {
 		this.id = ID.Ball;
 		this.vel = vel;
 		time = 300;
-		velX = vel * xVal / Math.sqrt(xVal * xVal + yVal * yVal) ;
-		velY = vel * yVal / Math.sqrt(xVal * xVal + yVal * yVal) ;	
+		velX = vel * xVal / Math.sqrt(xVal * xVal + yVal * yVal);
+		velY = vel * yVal / Math.sqrt(xVal * xVal + yVal * yVal);	
 	}
 	
 	/**
@@ -38,15 +41,15 @@ public abstract class Ball extends GameObject {
 		this.id = ID.Ball;
 		this.vel = vel;
 		time = 300;
-		velX = vel * Math.cos(angle) ;
-		velY = vel * Math.sin(angle) ;	
+		velX = vel * Math.cos(angle);
+		velY = vel * Math.sin(angle);	
 	}
 
 	@Override
 	public void tick() {
 		if (isMoving){
-			x += velX;
-			y += velY;
+			x += velX * speedMultiplier;
+			y += velY * speedMultiplier;
 			time--;
 		}
 		
@@ -69,4 +72,6 @@ public abstract class Ball extends GameObject {
 	
 	public int getPower(){ return power; }
 	public void setPower(int power){ this.power = power; }
+	public double getVelX(){ return velX; }
+	public double getVelY(){ return velY; }
 }

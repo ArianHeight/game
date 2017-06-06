@@ -1,7 +1,5 @@
 package simpleAI;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /*
  * simple ai that chases target in straight line
@@ -32,6 +30,10 @@ public class SimpleChaser extends FSM
 		attacked.addPrecon("PLAYER_SWIPE_RANGE");
 		attacked.addFX("FLAG_DMG_PLAYER");
 		
+		state attackedO = new state("STILL_ATTACKING");
+		attacked.addPrecon("PLAYER_ATKTIMER_ACTIVE");
+		attacked.addFX("FLAG_DMG_PLAYER");
+		
 		state dead = new state("DEADED");
 		dead.addPrecon("NO_HEALTH");
 		dead.addFX("DELETE_ENTITY");
@@ -42,7 +44,8 @@ public class SimpleChaser extends FSM
 		this.m_availibleStates.add(chase); //chasing player around 1
 		this.m_availibleStates.add(stunned); //stun state 2
 		this.m_availibleStates.add(attacked); //3
-		this.m_availibleStates.add(dead); //4
+		this.m_availibleStates.add(attackedO);
+		this.m_availibleStates.add(dead); //5
 		
 		this.m_currentState = this.m_availibleStates.get(0); //defaults to idle state
 	}

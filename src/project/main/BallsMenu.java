@@ -30,12 +30,44 @@ public class BallsMenu {
 			g.drawRect(Game.WIDTH / 2 - 100, 580, 200, 64);
 			g.drawString("Back", 600, 620);
 			
-			Image img = new ImageIcon(this.getClass().getResource("/waterball.png")).getImage();
-			g.drawImage(img, 0, 0, 80, 80, 0, 0, 8, 8, null);
-			
 			g.setFont(font3);
-			g.drawString("Water Ball", 10, 100);
-			g.drawString("A generic ball", 0, 120);
+			
+			for (int i = 1; i <= 7; i++){
+				String picName;
+				int y = 350;
+				
+				if (i == 1){
+					picName = "/waterball.png";
+					g.drawString("Water Ball", 160 * i - 40, y);
+				}
+				else if (i == 2){
+					picName = "/fireball.png";
+					g.drawString("Fire Ball", 160 * i - 40, y);
+				}
+				else if (i == 3){
+					picName = "/rockball.png";
+					g.drawString("Rock Ball", 160 * i - 40, y);
+				}
+				else if (i == 4){
+					picName = "/fluxball.png";
+					g.drawString("Flux Ball", 160 * i - 40, y);
+				}
+				else if (i == 5){
+					picName = "/lifeball.png";
+					g.drawString("Life Ball", 160 * i - 40, y);
+				}
+				else if (i == 6){
+					picName = "/crystalball.png";
+					g.drawString("Crystal Ball", 160 * i - 40, y);
+				}
+				else {
+					picName = "/mysteryball.png";
+					g.drawString("Mystery Ball", 160 * i - 40, y);
+				}
+				
+				Image img = new ImageIcon(this.getClass().getResource(picName)).getImage();
+				g.drawImage(img, 160 * i - 50, 250, 160 * i + 30, 330, 0, 0, 8, 8, null);
+			}
 		}
 	}	
 }

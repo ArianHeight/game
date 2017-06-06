@@ -1,7 +1,5 @@
 package simpleAI;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /*
  * simple ai that chases target in straight line

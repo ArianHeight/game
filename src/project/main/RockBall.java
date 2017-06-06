@@ -40,6 +40,6 @@ public class RockBall extends Ball {
 
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle((int)winX, (int)winY, 4, 4);
+		return new Rectangle((int)winX, (int)winY, 8, 8);
 	}
 }

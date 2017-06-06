@@ -13,5 +13,6 @@ public enum ID {
 	RockBall(),
 	LifeBall(),
 	FluxBall(),
+	CrystalBall(),
 	MysteryBall();
 }

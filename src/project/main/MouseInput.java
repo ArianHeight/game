@@ -2,7 +2,6 @@ package project.main;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Random;
 
 import project.main.Game.STATE;
 
@@ -23,6 +22,7 @@ public class MouseInput extends MouseAdapter {
 		if (Game.gameState == STATE.Menu){
 			// clicks play
 			if (mouseOver(mx, my, Game.WIDTH / 2 - 100, 150, 200, 64)){
+				//Game.handler.clearAll();
 				Game.gameState = STATE.Game;
 			}
 			// clicks help

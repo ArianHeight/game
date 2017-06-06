@@ -1,6 +1,7 @@
 package project.main;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 /**
@@ -27,6 +28,7 @@ public class HUD {
 	}
 	
 	public void render(Graphics g){
+		g.setFont(new Font("arial", 0, 12));
 		g.setColor(Color.gray);
 		g.fillRect(15, 15, (int)(MAX_HEALTH * 2), 32);
 		// changes color of health as it decreases from green (max health) to red (min health)
