@@ -79,7 +79,7 @@ public abstract class Enemy extends GameObject {
 				if (getBounds().intersects(tempObject.getBounds())){
 					
 					if (tempObject.getId() == ID.LifeBall){
-						int h = (int)(((Ball)tempObject).getPower() * Ball.damageMultiplier / 3);
+						int h = (int)(((Ball)tempObject).getPower() * Ball.damageMultiplier / 4);
 						h = Math.min(health, h);
 						h = Math.max(h, 0);
 						

@@ -17,7 +17,7 @@ public class UpgradeStore extends MouseAdapter {
 	private int [] upgradeIncreases = {15, 10, 10, 1, 1, 9001};
 	
 	private boolean [] ballPurchased = {false, false, false, false, false, false};
-	private int [] ballCosts = {2, 2, 5, 1, 1, 2243};
+	private int [] ballCosts = {10, 150, 100, 1, 1, 2243};
 	
 	public UpgradeStore(HUD hud){
 		this.hud = hud;

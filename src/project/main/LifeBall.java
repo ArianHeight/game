@@ -15,7 +15,7 @@ public class LifeBall extends Ball {
 	public LifeBall(double x, double y, double xVal, double yVal, Player p) {
 		super(x, y, xVal, yVal, p, 8);
 		id = ID.LifeBall;
-		setPower(40);
+		setPower(20);
 		infinitePierce = false;
 	}
 	
@@ -27,7 +27,7 @@ public class LifeBall extends Ball {
 	public LifeBall(double x, double y, double angle, Player p) {
 		super(x, y, angle, p, 8);
 		id = ID.LifeBall;
-		setPower(40);
+		setPower(20);
 		infinitePierce = false;
 	}
 
