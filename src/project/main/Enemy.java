@@ -52,8 +52,7 @@ public abstract class Enemy extends GameObject {
 		vel = Math.sqrt(velX * velX + velY * velY);
 		
 		this.conditions = new ArrayList<String>();
-		this.ai = new SimpleChaser();
-		this.effects = this.ai.getFX();
+		//this.effects = this.ai.getFX();
 	}
 	
 	public Rectangle getBounds(){

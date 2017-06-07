@@ -26,6 +26,23 @@ public class HeavyChaser extends FSM
 		attacked.addPrecon("PLAYER_SWIPE_RANGE");
 		attacked.addFX("FLAG_DMG_PLAYER");
 		
+		state attackedO = new state("STILL_ATTACKING");
+		attacked.addPrecon("PLAYER_ATKTIMER_ACTIVE");
+		attacked.addFX("FLAG_DMG_PLAYER");
+		
+		state stunned = new state("STUNNED");
+		stunned.addPrecon("HIT");
+		stunned.addFX("STUN_LOCK");
+		
+		state specialAtk = new state("SPECIAL_ATTACK");
+		attacked.addPrecon("PLAYER_SUCK_RANGE");
+		attacked.addPrecon("NO_VOID_ACTIVE");
+		attacked.addFX("FLAG_SUCK_ATTACK");
+		
+		state specialAtkO = new state("SPECIAL_ATTACKING");
+		attacked.addPrecon("SPECIAL_ACTIVATED");
+		attacked.addFX("FLAG_SUCK_ATTACK");
+		
 		state dead = new state("DEADED");
 		dead.addPrecon("NO_HEALTH");
 		dead.addFX("DELETE_ENTITY");
@@ -34,8 +51,12 @@ public class HeavyChaser extends FSM
 		//adding states priority is higher the larger the index
 		this.m_availibleStates.add(idle); //idle state 0
 		this.m_availibleStates.add(chase); //chasing player around 1
-		this.m_availibleStates.add(attacked); //4
-		this.m_availibleStates.add(dead); //5
+		this.m_availibleStates.add(attacked); //2
+		this.m_availibleStates.add(attackedO); //3
+		this.m_availibleStates.add(stunned); //4
+		this.m_availibleStates.add(specialAtk); //5
+		this.m_availibleStates.add(specialAtkO); //6
+		this.m_availibleStates.add(dead); //7
 		
 		this.m_currentState = this.m_availibleStates.get(0); //defaults to idle state
 	}

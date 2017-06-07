@@ -6,23 +6,26 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
+import simpleAI.SimpleChaser;
+
 public class Zombie extends Enemy {
 
-	private int atkDimensions = 50; //square dimensions
-	private int delayedX;
-	private int delayedY;
+	private static int atkDimensions = 30; //square dimensions
+	private static int delayedX;
+	private static int delayedY;
 	
 	public Zombie(int x, int y, Handler handler, HUD hud) {
 		super(x, y, handler, hud);
 		id = ID.Zombie;
+		ai = new SimpleChaser();
 		setHealth(100);
 		setMaxHealth(100);
 		
 		//sets some variables
 		stunMaxTime = 20;
-		pre_atkMaxTime = 30;
-		atkCooldownMaxTime = 120;
-		atkDMG = 15;
+		pre_atkMaxTime = 20;
+		atkCooldownMaxTime = 100;
+		atkDMG = 10;
 	}
 	
 	protected void updateConditions()
@@ -42,7 +45,7 @@ public class Zombie extends Enemy {
 		{
 			this.conditions.add("PLAYER_ATKTIMER_ACTIVE");
 		}
-		else if (distToPlayer <= 90.0) //attack distance
+		else if (distToPlayer <= 50.0) //attack distance
 		{
 			this.conditions.add("PLAYER_SWIPE_RANGE");
 		}
@@ -69,15 +72,17 @@ public class Zombie extends Enemy {
 		{
 			if (s.equals("STRAIGHT_LINE_MOVE"))
 			{
-				move();
+				move(); //last possible state, least important, method will almost always end before this
 			}
 			else if (s.equals("FLAG_DMG_PLAYER"))
 			{
 				attack();
+				return; //can't do anything after attack
 			}
 			else if (s.equals("STUN_LOCK"))
 			{
 				stunMove();
+				return; //can't do anything after stun
 			}
 		}
 	}
@@ -103,6 +108,7 @@ public class Zombie extends Enemy {
 				isAttacking = true;
 			}
 			pre_atkTimer -= 1;
+			Game.dmgAreas.add(new Rectangle(delayedX, delayedY, atkDimensions, atkDimensions));
 		}
 		else //cooldowntimer counting ...
 		{

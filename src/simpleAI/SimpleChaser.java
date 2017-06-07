@@ -22,10 +22,6 @@ public class SimpleChaser extends FSM
 		chase.addPrecon("PLAYER_IN_RANGE");
 		chase.addFX("STRAIGHT_LINE_MOVE");
 		
-		state stunned = new state("STUNNED");
-		stunned.addPrecon("HIT");
-		stunned.addFX("STUN_LOCK");
-		
 		state attacked = new state("ATTACKING");
 		attacked.addPrecon("PLAYER_SWIPE_RANGE");
 		attacked.addFX("FLAG_DMG_PLAYER");
@@ -33,6 +29,10 @@ public class SimpleChaser extends FSM
 		state attackedO = new state("STILL_ATTACKING");
 		attacked.addPrecon("PLAYER_ATKTIMER_ACTIVE");
 		attacked.addFX("FLAG_DMG_PLAYER");
+		
+		state stunned = new state("STUNNED");
+		stunned.addPrecon("HIT");
+		stunned.addFX("STUN_LOCK");
 		
 		state dead = new state("DEADED");
 		dead.addPrecon("NO_HEALTH");
@@ -42,9 +42,9 @@ public class SimpleChaser extends FSM
 		//adding states priority is higher the larger the index
 		this.m_availibleStates.add(idle); //idle state 0
 		this.m_availibleStates.add(chase); //chasing player around 1
-		this.m_availibleStates.add(stunned); //stun state 2
-		this.m_availibleStates.add(attacked); //3
-		this.m_availibleStates.add(attackedO);
+		this.m_availibleStates.add(attacked); //2
+		this.m_availibleStates.add(attackedO); //3
+		this.m_availibleStates.add(stunned); //stun state 4
 		this.m_availibleStates.add(dead); //5
 		
 		this.m_currentState = this.m_availibleStates.get(0); //defaults to idle state

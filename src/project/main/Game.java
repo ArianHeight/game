@@ -3,7 +3,10 @@ package project.main;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 
@@ -23,6 +26,7 @@ public class Game extends Canvas implements Runnable{
 	
 	public static Camera camera;
 	public static Player player;
+	public static List<Rectangle> dmgAreas = new ArrayList<Rectangle>();
 	
 	public static Handler handler;
 	private HUD hud;
@@ -179,6 +183,12 @@ public class Game extends Canvas implements Runnable{
 		}
 		
 		player.render(g);
+		Image swoosh = new ImageIcon(this.getClass().getResource("/swoosh.png")).getImage();
+		for (Rectangle r : dmgAreas)
+		{
+			g.drawImage(swoosh, (int)r.getMinX(), (int)r.getMinY(), (int)(r.getMinX() + r.getWidth()), (int)(r.getMinY() + r.getHeight()), 0, 0, 16, 16, null);
+		}
+		dmgAreas.clear();
 		
 		if (gameState == STATE.Game){
 			//hud.render(g);
