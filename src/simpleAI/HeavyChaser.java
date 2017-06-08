@@ -27,21 +27,21 @@ public class HeavyChaser extends FSM
 		attacked.addFX("FLAG_DMG_PLAYER");
 		
 		state attackedO = new state("STILL_ATTACKING");
-		attacked.addPrecon("PLAYER_ATKTIMER_ACTIVE");
-		attacked.addFX("FLAG_DMG_PLAYER");
+		attackedO.addPrecon("PLAYER_ATKTIMER_ACTIVE");
+		attackedO.addFX("FLAG_DMG_PLAYER");
 		
 		state stunned = new state("STUNNED");
 		stunned.addPrecon("HIT");
 		stunned.addFX("STUN_LOCK");
 		
 		state specialAtk = new state("SPECIAL_ATTACK");
-		attacked.addPrecon("PLAYER_SUCK_RANGE");
-		attacked.addPrecon("NO_VOID_ACTIVE");
-		attacked.addFX("FLAG_SUCK_ATTACK");
+		specialAtk.addPrecon("PLAYER_SUCK_RANGE");
+		specialAtk.addPrecon("NO_VOID_ACTIVE");
+		specialAtk.addFX("FLAG_SUCK_ATTACK");
 		
 		state specialAtkO = new state("SPECIAL_ATTACKING");
-		attacked.addPrecon("SPECIAL_ACTIVATED");
-		attacked.addFX("FLAG_SUCK_ATTACK");
+		specialAtkO.addPrecon("SPECIAL_ACTIVATED");
+		specialAtkO.addFX("FLAG_SUCK_ATTACK");
 		
 		state dead = new state("DEADED");
 		dead.addPrecon("NO_HEALTH");

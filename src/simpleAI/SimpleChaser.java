@@ -27,8 +27,8 @@ public class SimpleChaser extends FSM
 		attacked.addFX("FLAG_DMG_PLAYER");
 		
 		state attackedO = new state("STILL_ATTACKING");
-		attacked.addPrecon("PLAYER_ATKTIMER_ACTIVE");
-		attacked.addFX("FLAG_DMG_PLAYER");
+		attackedO.addPrecon("PLAYER_ATKTIMER_ACTIVE");
+		attackedO.addFX("FLAG_DMG_PLAYER");
 		
 		state stunned = new state("STUNNED");
 		stunned.addPrecon("HIT");

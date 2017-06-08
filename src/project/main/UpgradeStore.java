@@ -7,20 +7,25 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import project.main.Game.STATE;
+import balls.Ball;
 
 public class UpgradeStore extends MouseAdapter {
 	
 	
 	private HUD hud;
 	
-	private int [] baseCosts = {10, 10, 10, 3, 3, 1337};
-	private int [] upgradeIncreases = {15, 10, 10, 1, 1, 9001};
+	private int [] baseCosts = {10, 10, 0, 5, 5};
+	private int [] upgradeIncreases = {15, 10, 0, 15, 25};
+	
+	private int healthUpgrades = 0, speedUpgrades = 0;
+	private int ballSpeedUpgrades = 0;
 	
 	private boolean [] ballPurchased = {false, false, false, false, false, false};
 	private int [] ballCosts = {10, 150, 100, 1, 1, 2243};
 	
 	public UpgradeStore(HUD hud){
 		this.hud = hud;
+		
 	}
 	
 	public void render(Graphics g){
@@ -34,12 +39,22 @@ public class UpgradeStore extends MouseAdapter {
 		// box 1
 		g.setFont(new Font("arial", 0, 12));
 		g.drawString("Upgrade Health", 110, 120);
-		g.drawString("Cost: " + baseCosts[0], 110, 140);
+		if (healthUpgrades >= 10){
+			g.drawString("---", 110, 140);
+		}
+		else {
+			g.drawString("Cost: " + baseCosts[0], 110, 140);
+		}
 		g.drawRect(100, 100, 100, 80);
 		
 		// box 2
 		g.drawString("Upgrade Speed", 260, 120);
-		g.drawString("Cost: " + baseCosts[1], 260, 140);
+		if (speedUpgrades >= 10){
+			g.drawString("---", 260, 140);
+		}
+		else {
+			g.drawString("Cost: " + baseCosts[1], 260, 140);
+		}
 		g.drawRect(250, 100, 100, 80);
 
 		/*
@@ -52,6 +67,9 @@ public class UpgradeStore extends MouseAdapter {
 		// box 4
 		g.drawString("Upgrade Ball", 560, 120);
 		g.drawString("Speed", 560, 135);
+		if (ballSpeedUpgrades >= 10){
+			g.drawString("---", 560, 140);
+		}
 		g.drawString("Cost: " + baseCosts[3], 560, 155);
 		g.drawRect(550, 100, 100, 80);
 		
@@ -61,11 +79,12 @@ public class UpgradeStore extends MouseAdapter {
 		g.drawString("Cost: " + baseCosts[4], 710, 155);
 		g.drawRect(700, 100, 100, 80);
 		
+		/*
 		// box 6
 		g.drawString("Refill Health", 860, 120);
 		g.drawString("Cost: " + baseCosts[5], 860, 140);
 		g.drawRect(850, 100, 100, 80);
-		
+		*/
 		
 		g.setFont(new Font("arial", 0, 30));
 		g.drawString("Balls", Game.WIDTH / 2 - 50, 250);
@@ -112,46 +131,37 @@ public class UpgradeStore extends MouseAdapter {
 		if (Game.gameState == STATE.UpgradeStore){
 			// box 1
 			if (mx >= 100 && mx <= 200){
-				if (my >= 100 && my <= 180){
+				if (my >= 100 && my <= 180 && healthUpgrades < 10){
 					if (hud.getCoins() >= baseCosts[0]){
 						hud.setCoins(hud.getCoins() - baseCosts[0]);
 						baseCosts[0] += upgradeIncreases[0];
 						HUD.MAX_HEALTH += 50;
 						HUD.HEALTH += 50;
+						//healthUpgrades++;
 					}
 				}
 			}
 			
 			// box 2
-			if (mx >= 250 && mx <= 350){
+			if (mx >= 250 && mx <= 350 && speedUpgrades < 10){
 				if (my >= 100 && my <= 180){
 					if (hud.getCoins() >= baseCosts[1]){
 						hud.setCoins(hud.getCoins() - baseCosts[1]);
 						baseCosts[1] += upgradeIncreases[1];
 						Game.player.setVel(Game.player.getVel() + 1);
+						//speedUpgrades++;
 					}
 				}
 			}
-			
-			/*
-			// box 3
-			if (mx >= 400 && mx <= 500){
-				if (my >= 100 && my <= 180){
-					if (hud.getCoins() >= baseCosts[2]){
-						hud.setCoins(hud.getCoins() - baseCosts[2]);
-						HUD.HEALTH += HUD.MAX_HEALTH / 4;
-					}
-				}
-			}
-			*/
-			
+
 			// box 4
 			if (mx >= 550 && mx <= 650){
 				if (my >= 100 && my <= 180){
-					if (hud.getCoins() >= baseCosts[3]){
+					if (hud.getCoins() >= baseCosts[3] && ballSpeedUpgrades < 10){
 						hud.setCoins(hud.getCoins() - baseCosts[3]);
 						Ball.speedMultiplier += 0.2;
 						baseCosts[3] += upgradeIncreases[3];
+						//ballSpeedUpgrades++;
 					}
 				}
 			}
@@ -237,47 +247,15 @@ public class UpgradeStore extends MouseAdapter {
 					}
 				}
 			}
-			
-			/*
-			// ball box 1
-			if (mx >= 100 && mx <= 200){
-				if (my >= 300 && my <= 380){
-					if (ballPurchased[0]){
-						Game.currentBall = ID.RockBall;
-					}
-					else if (hud.getCoins() >= ballCosts[0]){
-						hud.setCoins(hud.getCoins() - ballCosts[0]);
-						ballCosts[0] = 99999;
-						ballPurchased[0] = true;
-						Game.currentBall = ID.RockBall;
-					}
-				}
-			}
-			
-			// ball box 2
-			if (mx >= 250 && mx <= 400){
-				if (my >= 300 && my <= 380){
-					if (ballPurchased[1]){
-						Game.currentBall = ID.FluxBall;
-					}
-					else if (hud.getCoins() >= ballCosts[1]){
-						hud.setCoins(hud.getCoins() - ballCosts[1]);
-						ballCosts[1] = 99999;
-						ballPurchased[1] = true;
-						Game.currentBall = ID.FluxBall;
-					}
-				}
-			}
-			*/
 		}			
 	}
 	
 	public void reset(){
-		int [] bc = {10, 10, 10, 30, 30, 1337};
-		int [] ui = {15, 10, 10, 30, 30, 9001};
+		int [] bc = {10, 10, 0, 5, 5};
+		int [] ui = {15, 10, 0, 15, 25};
 		
 		boolean [] bp = {false, false, false, false, false, false};
-		int [] bco = {2, 2, 5, 1, 1, 2243};
+		int [] bco = {10, 150, 100, 1, 1, 2243};
 		
 		for (int i = 0; i < bc.length; i++){
 			baseCosts[i] = bc[i];
@@ -293,5 +271,8 @@ public class UpgradeStore extends MouseAdapter {
 		}
 		Ball.damageMultiplier = 1;
 		Ball.speedMultiplier = 1;
+		healthUpgrades = 0;
+		speedUpgrades = 0;
+		ballSpeedUpgrades = 0;
 	}
 }

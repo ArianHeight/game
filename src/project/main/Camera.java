@@ -1,9 +1,6 @@
 package project.main;
 
 import java.awt.Graphics;
-import java.awt.Image;
-
-import javax.swing.ImageIcon;
 
 public class Camera {
 	public double X, Y;

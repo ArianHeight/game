@@ -7,7 +7,7 @@ import java.util.List;
 
 import project.main.Game.STATE;
 import simpleAI.FSM;
-import simpleAI.SimpleChaser;
+import balls.Ball;
 
 public abstract class Enemy extends GameObject {
 	//attributes

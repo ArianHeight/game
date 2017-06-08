@@ -10,6 +10,14 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import balls.CrystalBall;
+import balls.FireBall;
+import balls.FluxBall;
+import balls.LifeBall;
+import balls.MysteryBall;
+import balls.RockBall;
+import balls.WaterBall;
+
 /**
  * 
  * @author Edmond Xue, Sean Wang

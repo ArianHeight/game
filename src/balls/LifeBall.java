@@ -1,10 +1,13 @@
-package project.main;
+package balls;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
+
+import project.main.ID;
+import project.main.Player;
 
 public class LifeBall extends Ball {
 	/**

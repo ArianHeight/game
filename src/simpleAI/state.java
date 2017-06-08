@@ -33,17 +33,18 @@ public class state
 		this.effects.add(condition);
 	}
 	
+	//assumes state has preconditions
 	public void checkPrecon(List<String> activeConditions)
 	{
 		for (String condition : this.preconditions)
 		{
-			if (activeConditions.contains(condition)) //active condition checks out against precon, push state to front
+			if (!activeConditions.contains(condition)) //active condition checks out against precon, push state to front
 			{
-				this.pushState = true;
+				this.pushState = false;
 				return; //early return
 			}
 		}
-		this.pushState = false; //condition does not check out, state is no longer being pushed
+		this.pushState = true; //condition does not check out, state is no longer being pushed
 	}
 	
 	public List<String> getFX()

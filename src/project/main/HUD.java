@@ -30,12 +30,12 @@ public class HUD {
 	public void render(Graphics g){
 		g.setFont(new Font("arial", 0, 12));
 		g.setColor(Color.gray);
-		g.fillRect(15, 15, (int)(MAX_HEALTH * 2), 32);
+		g.fillRect(15, 15, 200, 32);
 		// changes color of health as it decreases from green (max health) to red (min health)
 		g.setColor(new Color(255-(int)greenValue, (int) greenValue, 0));
-		g.fillRect(15, 15, (int)(HEALTH * 2), 32);
+		g.fillRect(15, 15, (int)(HEALTH / MAX_HEALTH * 200), 32);
 		g.setColor(Color.white);
-		g.drawRect(15, 15, (int)(MAX_HEALTH * 2), 32);
+		g.drawRect(15, 15, 200, 32);
 		g.drawString((int)HEALTH + " / " + (int)MAX_HEALTH, 15, 70);
 		
 		g.drawString("Level: " + level, 15, 85);

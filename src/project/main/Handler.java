@@ -3,6 +3,8 @@ package project.main;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import balls.Ball;
+
 /**
  * Handler
  * A class that holds all of the GameObjects in a LinkedList (for efficiency). Calling its tick method calls the tick
@@ -13,10 +15,10 @@ public class Handler {
 	
 	public boolean running = false;
 	
-	ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-	ArrayList<Ball> balls = new ArrayList<Ball>();
-	ArrayList<Collectible> collectibles = new ArrayList<Collectible>();
-	ArrayList<Explosion> explosions = new ArrayList<Explosion>();
+	public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	public ArrayList<Ball> balls = new ArrayList<Ball>();
+	public ArrayList<Collectible> collectibles = new ArrayList<Collectible>();
+	public ArrayList<Explosion> explosions = new ArrayList<Explosion>();
 	 
 	public void tick(){
 		if (!running){
@@ -121,9 +123,12 @@ public class Handler {
 	public void clearExplosions(){ explosions.clear(); }
 
 	public void freezeObjects(){
-		for (Enemy e: enemies){
-			if (e != null){
-				e.setMoving(false);
+		for (int i = enemies.size() - 1; i >= 0; i--){
+			if (!(i >= enemies.size())){
+				Enemy e = enemies.get(i);
+				if (e != null){
+					e.setMoving(false);
+				}
 			}
 		}
 		for (Ball b: balls){
