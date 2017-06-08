@@ -36,6 +36,9 @@ public class Player extends GameObject{
 			x += velX;
 			y += velY;
 			spiralCounter--;
+			if (spiralCounter < 0){
+				spiralCounter = 0;
+			}
 		}
 		
 		collision();
@@ -82,7 +85,7 @@ public class Player extends GameObject{
 		for (int i = 0; i < 360; i += 10){
 			Game.generateBall(x + 16, y + 16, i * 2 * Math.PI / 360, this);
 		}
-		spiralCounter = 1;
+		spiralCounter = 10;
 	}
 	
 	public void freeze(){

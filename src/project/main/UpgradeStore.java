@@ -21,7 +21,7 @@ public class UpgradeStore extends MouseAdapter {
 	private int ballSpeedUpgrades = 0;
 	
 	private boolean [] ballPurchased = {false, false, false, false, false, false};
-	private int [] ballCosts = {10, 150, 100, 1, 1, 2243};
+	private int [] ballCosts = {10, 150, 100, 1, 1, 243};
 	
 	public UpgradeStore(HUD hud){
 		this.hud = hud;
@@ -177,7 +177,7 @@ public class UpgradeStore extends MouseAdapter {
 				}
 			}
 			
-			for (int i = 1; i <= 5; i++){
+			for (int i = 1; i <= 6; i++){
 				if (mx >= (150 * i - 50) && mx <= (150 * i + 50) && my >= 300 && my <= 380){
 					if (i == 1){
 						if (ballPurchased[0]){

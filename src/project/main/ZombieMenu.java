@@ -16,7 +16,7 @@ public class ZombieMenu {
 		if (Game.gameState == STATE.ZombieMenu){
 			Font font1 = new Font("arial", 1, 50);
 			Font font2 = new Font("arial", 1, 30);
-			Font font3 = new Font("arial", 1, 15);
+			Font font3 = new Font("arial", 1, 20);
 			
 			g.setFont(font1);
 			g.setColor(Color.white);
@@ -30,23 +30,23 @@ public class ZombieMenu {
 			
 			for (int i = 1; i <= 3; i++){
 				String picName;
-				int y = 350;
+				int y = 450;
 				
 				if (i == 1){
 					picName = "/zombie.png";
-					g.drawString("Zombie", 180 * i - 40, y);
+					g.drawString("Zombie", 310 * i - 40, y);
 				}
 				else if (i == 2){
 					picName = "/zombieThrower.png";
-					g.drawString("Zombie Thrower", 180 * i - 50, y);
+					g.drawString("Zombie Thrower", 305 * i - 50, y);
 				}
 				else {
 					picName = "/zombieKnight.png";
-					g.drawString("Zombie Knight", 180 * i - 50, y);
+					g.drawString("Zombie Knight", 315 * i - 50, y);
 				}
 				
 				Image img = new ImageIcon(this.getClass().getResource(picName)).getImage();
-				g.drawImage(img, 180 * i - 50, 250, 180 * i + 30, 330, 0, 0, 32, 32, null);
+				g.drawImage(img, 320 * i - 80, 250, 320 * i + 80, 410, 0, 0, 32, 32, null);
 			}
 		}
 	}	

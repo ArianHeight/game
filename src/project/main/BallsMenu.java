@@ -58,11 +58,11 @@ public class BallsMenu {
 				}
 				else if (i == 6){
 					picName = "/crystalball.png";
-					g.drawString("Crystal Ball", 160 * i - 40, y);
+					g.drawString("Crystal Ball", 158 * i - 40, y);
 				}
 				else {
 					picName = "/mysteryball.png";
-					g.drawString("Mystery Ball", 160 * i - 40, y);
+					g.drawString("Mystery Ball", 158 * i - 40, y);
 				}
 				
 				Image img = new ImageIcon(this.getClass().getResource(picName)).getImage();

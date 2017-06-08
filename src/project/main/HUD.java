@@ -41,7 +41,10 @@ public class HUD {
 		g.drawString("Level: " + level, 15, 85);
 		g.drawString("Score: " + score, 15, 100);
 		g.drawString("Coins: " + coins, 15, 115);
-		g.drawString("Enemies Left : " + Game.spawner.getEnemiesLeft(), 15, 130);
+		g.drawString("Enemies Left: " + Game.spawner.getEnemiesLeft(), 15, 130);
+		
+		g.drawString("Spiral Countdown: " + Game.player.getSpiralCounter(), 15, 160);
+		g.drawString("Press u to open upgrade menu", 15, 190);
 	}
 	
 	public void clearAll(){
