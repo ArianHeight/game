@@ -49,12 +49,12 @@ public class Player extends GameObject{
 		for (int i = Game.handler.enemies.size() - 1; i >= 0; i--){
 			Enemy tempObject = Game.handler.enemies.get(i);
 			
-			if (tempObject.getId() == ID.ZombieKnight || tempObject.getId() == ID.ZombieThrower){
+			if (tempObject.getId() == ID.ZombieThrower){
 				if (getBounds().intersects(tempObject.getBounds())){
 					HUD.HEALTH -= 1;
 				}
 			}
-			else if (tempObject.getId() == ID.Zombie)
+			else if (tempObject.getId() == ID.Zombie || tempObject.getId() == ID.ZombieKnight)
 			{
 				if (tempObject.getIsAttacking())
 				{

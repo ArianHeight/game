@@ -124,8 +124,8 @@ public class Zombie extends Enemy {
 	
 	public void stunMove()
 	{	
-		x += stunX * (xDiff / distToPlayer);
-		y += stunY * (yDiff / distToPlayer);
+		x += stunX * Math.abs(xDiff / distToPlayer);
+		y += stunY * Math.abs(yDiff / distToPlayer);
 		
 		x = Game.clamp(x, -1000, 2625);
 		y = Game.clamp(y, -1000, 1500);

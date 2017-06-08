@@ -33,7 +33,7 @@ public class ZombieKnight extends Enemy {
 		setMaxHealth(300);
 		
 		//sets some variables
-		stunMaxTime = 9;
+		stunMaxTime = 10;
 		pre_atkMaxTime = 50;
 		atkCooldownMaxTime = 150;
 		atkDMG = 20;
@@ -58,16 +58,16 @@ public class ZombieKnight extends Enemy {
 		{
 			this.conditions.add("PLAYER_ATKTIMER_ACTIVE");
 		}
-		if (this.pre_atkTimer != -1 || this.voidAttackTimer != -1)
+		if (this.pre_vAtkTimer != -1 || this.voidAttackTimer != -1)
 		{
 			this.conditions.add("SPECIAL_ACTIVATED");
 		}
-		else if (distToPlayer <= 35.0) //attack distance
+		else if (distToPlayer <= 35.0) //suck distance
 		{
 			this.conditions.add("PLAYER_SWIPE_RANGE");
 			this.conditions.add("PLAYER_SUCK_RANGE");
 		}
-		else if (distToPlayer <= 70.0) //attack distance
+		else if (distToPlayer <= 85.0) //attack distance
 		{
 			this.conditions.add("PLAYER_SWIPE_RANGE");
 		}
@@ -109,12 +109,12 @@ public class ZombieKnight extends Enemy {
 			{
 				stunMove();
 				return; //can't do anything after stun
-			}
+			}/*
 			else if (s.equals("FLAG_SUCK_ATTACK"))
 			{
 				specialAttack();
 				return; //can't do anything after stun
-			}
+			}*/
 		}
 	}
 	
@@ -160,8 +160,8 @@ public class ZombieKnight extends Enemy {
 	
 	public void stunMove()
 	{	
-		x += stunX * (xDiff / distToPlayer);
-		y += stunY * (yDiff / distToPlayer);
+		x += stunX * Math.abs(xDiff / distToPlayer);
+		y += stunY * Math.abs(yDiff / distToPlayer);
 		
 		x = Game.clamp(x, -1000, 2625);
 		y = Game.clamp(y, -1000, 1500);
@@ -217,17 +217,17 @@ public class ZombieKnight extends Enemy {
 	
 	public void tick()
 	{
-		/*
+		
 		super.tick();
 	    super.collision();
 		updateConditions();
 		ai.runStateUpdate(conditions);
 		readActiveEffects();
-		countDownSpecialCD();*/
-		
+		countDownSpecialCD();
+		/*
 		move();
 		super.tick();
-		super.collision();
+		super.collision();*/
 	}
 
 	public void render(Graphics g) {
