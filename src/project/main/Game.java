@@ -17,6 +17,7 @@ import balls.LifeBall;
 import balls.MysteryBall;
 import balls.RockBall;
 import balls.WaterBall;
+import project.main.Game.STATE;
 
 /**
  * 
@@ -35,6 +36,7 @@ public class Game extends Canvas implements Runnable{
 	public static Camera camera;
 	public static Player player;
 	public static List<Rectangle> dmgAreas = new ArrayList<Rectangle>();
+	public static List<VoidAttack> voidAreas = new ArrayList<VoidAttack>();
 	
 	public static Handler handler;
 	private HUD hud;
@@ -50,6 +52,17 @@ public class Game extends Canvas implements Runnable{
 	public static ID currentBall;
 	
 	private MouseInput mi;
+	
+	//keys that are pressed
+	public static boolean k_w = false;
+	public static boolean k_a = false;
+	public static boolean k_s = false;
+	public static boolean k_d = false;
+	
+	public static boolean k_up = false;
+	public static boolean k_left = false;
+	public static boolean k_down = false;
+	public static boolean k_right = false;
 	
 	// possible states for the game to be in
 	public enum STATE {
@@ -145,9 +158,72 @@ public class Game extends Canvas implements Runnable{
         stop();
     }
 	
+	private void updateKeys()
+	{
+		if (Game.gameState == STATE.Game){
+			Player p = Game.player;
+			double vel = p.getVel();
+			if (k_up){
+				p.setVelY(-vel);
+			}
+			else if (k_down){
+				p.setVelY(vel);
+			}
+			else
+			{
+				p.setVelY(0);
+			}
+			if (k_right){
+				p.setVelX(vel);
+			}
+			else if (k_left){
+				p.setVelX(-vel);
+			}
+			else
+			{
+				p.setVelX(0);
+			}
+			if (k_w){
+				p.setVelY(-vel);
+			}
+			else if (k_s){
+				p.setVelY(vel);
+			}
+			else
+			{
+				p.setVelY(0);
+			}
+			if (k_d){
+				p.setVelX(vel);
+			}
+			else if (k_a){
+				p.setVelX(-vel);
+			}
+			else
+			{
+				p.setVelX(0);
+			}
+		}
+	}
+	
 	private void tick(){
+		updateKeys();
+		
 		handler.tick();
 		player.tick();
+		
+		//for managing void areas
+		boolean active = true;
+		for (VoidAttack v : voidAreas)
+		{
+			v.tick();
+			active = v.isStillActive();
+		}
+		if (!active)
+		{
+			voidAreas.clear();
+		}
+		
 		if (gameState == STATE.Game){
 			hud.tick();
 			camera.tick();
@@ -190,12 +266,23 @@ public class Game extends Canvas implements Runnable{
 		}
 		
 		player.render(g);
+		
+		//for drawing damage areas
 		Image swoosh = new ImageIcon(this.getClass().getResource("/swoosh.png")).getImage();
 		for (Rectangle r : dmgAreas)
 		{
 			g.drawImage(swoosh, (int)r.getMinX(), (int)r.getMinY(), (int)(r.getMinX() + r.getWidth()), (int)(r.getMinY() + r.getHeight()), 0, 0, 16, 16, null);
 		}
 		dmgAreas.clear();
+		
+		//for drawing void areas
+		for (VoidAttack v : voidAreas)
+		{
+			if (v.isPulling())
+			{
+				v.render(g);
+			}
+		}
 		
 		if (gameState == STATE.Game){
 			//hud.render(g);

@@ -1,0 +1,1 @@
+Sean, turns out, the runnable jar file has to have the 3 zombie textures in the same directory to run, for whatever reason

@@ -67,6 +67,26 @@ public class Player extends GameObject{
 			}
 		}
 		
+		for (VoidAttack v : Game.voidAreas)
+		{
+			if (v.isAttacking())
+			{
+				//dmg
+				if (getBounds().intersects(v.getAtkBounds()))
+				{
+					HUD.HEALTH -= v.getDMG();
+				}
+			}
+			if (v.isPulling())
+			{
+				//pull
+				double pullX = v.getPullX();
+				double pullY = v.getPullY();
+				x += pullX;
+				y += pullY;
+			}
+		}
+		
 		for (int i = Game.handler.collectibles.size() - 1; i >= 0; i--){
 			Collectible tempObject = Game.handler.collectibles.get(i);
 			if (tempObject.getId() == ID.Coin){

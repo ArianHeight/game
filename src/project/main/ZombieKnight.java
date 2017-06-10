@@ -11,10 +11,13 @@ import simpleAI.HeavyChaser;
 public class ZombieKnight extends Enemy {
 	
 	private int atkDimensions = 30; //square dimensions
-	private int delayedX;
-	private int delayedY;
+	private double delayedX;
+	private double delayedY;
+	private int atkX; //win space
+	private int atkY; //win space
 	
 	//for special attack
+	/*
 	private boolean isSpecialAttacking = false;
 	private static int voidRadius = 75;
 	private static int voidForce = 7; 
@@ -22,8 +25,8 @@ public class ZombieKnight extends Enemy {
 	private static int pre_vAtkMaxTime = 200;
 	private static int voidAttackTimer = -1;
 	private static int voidAttackMaxTime = 250;
-	private static int vAtkCooldownTimer = -1;
-	private static int vAtkCooldownMaxTime = 600;
+	*/
+	private static boolean voidAvailible = true;
 
 	public ZombieKnight(int x, int y, Handler handler, HUD hud) {
 		super(x, y, handler, hud);
@@ -58,11 +61,11 @@ public class ZombieKnight extends Enemy {
 		if (this.pre_atkTimer != -1) //player is currently attacking
 		{
 			this.conditions.add("PLAYER_ATKTIMER_ACTIVE");
-		}
-		if (this.pre_vAtkTimer != -1 || this.voidAttackTimer != -1)
+		}/*
+		else if (this.vAtkCooldownTimer != -1)
 		{
 			this.conditions.add("SPECIAL_ACTIVATED");
-		}
+		}*/
 		else if (distToPlayer <= 35.0) //suck distance
 		{
 			this.conditions.add("PLAYER_SWIPE_RANGE");
@@ -82,7 +85,7 @@ public class ZombieKnight extends Enemy {
 		}
 		
 		//conditions
-		if (vAtkCooldownTimer == -1)
+		if (voidAvailible)
 		{
 			this.conditions.add("NO_VOID_ACTIVE");
 		}
@@ -110,12 +113,12 @@ public class ZombieKnight extends Enemy {
 			{
 				stunMove();
 				return; //can't do anything after stun
-			}/*
+			}
 			else if (s.equals("FLAG_SUCK_ATTACK"))
 			{
 				specialAttack();
 				return; //can't do anything after stun
-			}*/
+			}
 		}
 	}
 	
@@ -127,11 +130,8 @@ public class ZombieKnight extends Enemy {
 			pre_atkTimer = pre_atkMaxTime;
 			atkCooldownTimer = atkCooldownMaxTime;
 			
-			//sets attack bounds
-			double x = Game.player.getX() - Game.camera.X + Game.WIDTH / 2;
-			double y = Game.player.getY() - Game.camera.Y + Game.HEIGHT / 2;
-			delayedX = (int)x;
-			delayedY = (int)y;
+			delayedX = Game.player.getX();
+			delayedY = Game.player.getY();
 		}
 		else if (pre_atkTimer != -1) //pre_atkTimer counting...
 		{
@@ -140,7 +140,12 @@ public class ZombieKnight extends Enemy {
 				isAttacking = true;
 			}
 			pre_atkTimer -= 1;
-			Game.dmgAreas.add(new Rectangle(delayedX, delayedY, atkDimensions, atkDimensions));
+			
+			//sets attack bounds
+			atkX = (int)(delayedX - Game.camera.X + Game.WIDTH / 2);
+			atkY = (int)(delayedY - Game.camera.Y + Game.HEIGHT / 2);
+			
+			Game.dmgAreas.add(new Rectangle(atkX, atkY, atkDimensions, atkDimensions));
 		}
 		else //cooldowntimer counting ...
 		{
@@ -151,12 +156,7 @@ public class ZombieKnight extends Enemy {
 	public Rectangle getAtkBounds()
 	{
 		isAttacking = false; //everytime this method is run, assumes it is run by player
-		if (isSpecialAttacking)
-		{
-			isSpecialAttacking = false;
-			return new Rectangle((int)this.winX, (int)this.winY, voidRadius, voidRadius);
-		}
-		return new Rectangle(delayedX, delayedY, atkDimensions, atkDimensions);
+		return new Rectangle(atkX, atkY, atkDimensions, atkDimensions);
 	}
 	
 	public void stunMove()
@@ -175,6 +175,9 @@ public class ZombieKnight extends Enemy {
 	
 	public void specialAttack()
 	{
+		Game.voidAreas.add(new VoidAttack((int)x, (int)y, (int)winX, (int)winY));
+		//System.out.println("Cowabunga");
+		/*
 		//either prime timer or countdown timer
 		if (pre_vAtkTimer == -1 && voidAttackTimer == -1 && this.conditions.contains("NO_VOID_ACTIVE")) //prime
 		{
@@ -203,13 +206,18 @@ public class ZombieKnight extends Enemy {
 			//add to special game variable for rendering later
 			//Game.dmgAreas.add(new Rectangle(delayedX, delayedY, atkDimensions, atkDimensions));
 		}
+		*/
 	}
 	
-	public void countDownSpecialCD()
+	public void updateVoidAvailible()
 	{
-		if (this.voidAttackTimer == -1 && this.vAtkCooldownTimer > -1)
+		if (Game.voidAreas.size() != 0)
 		{
-			this.vAtkCooldownTimer--;
+			voidAvailible = false;
+		}
+		else
+		{
+			voidAvailible = true;
 		}
 	}
 	
@@ -221,7 +229,7 @@ public class ZombieKnight extends Enemy {
 		updateConditions();
 		ai.runStateUpdate(conditions);
 		readActiveEffects();
-		countDownSpecialCD();
+		updateVoidAvailible();
 		/*
 		move();
 		super.tick();

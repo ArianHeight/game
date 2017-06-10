@@ -1,1 +1,0 @@
--update state.java so it state.checkPrecon(List<String>) can for multiple preconditions

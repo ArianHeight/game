@@ -11,8 +11,10 @@ import simpleAI.SimpleChaser;
 public class Zombie extends Enemy {
 
 	private static int atkDimensions = 30; //square dimensions
-	private static int delayedX;
-	private static int delayedY;
+	private double delayedX;
+	private double delayedY;
+	private int atkX; //win space
+	private int atkY; //win space
 	
 	public Zombie(int x, int y, Handler handler, HUD hud) {
 		super(x, y, handler, hud);
@@ -95,11 +97,8 @@ public class Zombie extends Enemy {
 			pre_atkTimer = pre_atkMaxTime;
 			atkCooldownTimer = atkCooldownMaxTime;
 			
-			//sets attack bounds
-			double x = Game.player.getX() - Game.camera.X + Game.WIDTH / 2;
-			double y = Game.player.getY() - Game.camera.Y + Game.HEIGHT / 2;
-			delayedX = (int)x;
-			delayedY = (int)y;
+			delayedX = Game.player.getX();
+			delayedY = Game.player.getY();
 		}
 		else if (pre_atkTimer != -1) //pre_atkTimer counting...
 		{
@@ -108,7 +107,12 @@ public class Zombie extends Enemy {
 				isAttacking = true;
 			}
 			pre_atkTimer -= 1;
-			Game.dmgAreas.add(new Rectangle(delayedX, delayedY, atkDimensions, atkDimensions));
+			
+			//sets attack bounds
+			atkX = (int)(delayedX - Game.camera.X + Game.WIDTH / 2);
+			atkY = (int)(delayedY - Game.camera.Y + Game.HEIGHT / 2);
+			
+			Game.dmgAreas.add(new Rectangle(atkX, atkY, atkDimensions, atkDimensions));
 		}
 		else //cooldowntimer counting ...
 		{
@@ -119,7 +123,7 @@ public class Zombie extends Enemy {
 	public Rectangle getAtkBounds()
 	{
 		isAttacking = false; //everytime this method is run, assumes it is run by player
-		return new Rectangle(delayedX, delayedY, atkDimensions, atkDimensions);
+		return new Rectangle(atkX, atkY, atkDimensions, atkDimensions);
 	}
 	
 	public void stunMove()

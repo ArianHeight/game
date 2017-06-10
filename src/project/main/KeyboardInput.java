@@ -9,8 +9,7 @@ import project.main.Game.STATE;
 
 
 public class KeyboardInput extends KeyAdapter {
-
- 
+	
 	/**
 	* This method gets called whenever a key is pressed. It sets the player's velX and velY accordingly. 
 	*/
@@ -19,30 +18,29 @@ public class KeyboardInput extends KeyAdapter {
 		int key = e.getKeyCode();
 		if (Game.gameState == STATE.Game){
 			Player p = Game.player;
-			double vel = p.getVel();
 			if (key == KeyEvent.VK_UP){
-				p.setVelY(-vel);
+				Game.k_up = true;
 			}
 			if (key == KeyEvent.VK_DOWN){
-				p.setVelY(vel);
+				Game.k_down = true;
 			}
 			if (key == KeyEvent.VK_RIGHT){
-				p.setVelX(vel);
+				Game.k_right = true;
 			}
 			if (key == KeyEvent.VK_LEFT){
-				p.setVelX(-vel);
+				Game.k_left = true;
 			}
 			if (key == KeyEvent.VK_W){
-				p.setVelY(-vel);
+				Game.k_w = true;
 			}
-			if (key == KeyEvent.VK_S){
-				p.setVelY(vel);
+			else if (key == KeyEvent.VK_S){
+				Game.k_s = true;
 			}
 			if (key == KeyEvent.VK_D){
-				p.setVelX(vel);
+				Game.k_d = true;
 			}
-			if (key == KeyEvent.VK_A){
-				p.setVelX(-vel);
+			else if (key == KeyEvent.VK_A){
+				Game.k_a = true;
 			}
 			if (key == KeyEvent.VK_SPACE){
 				p.spiral();
@@ -59,36 +57,36 @@ public class KeyboardInput extends KeyAdapter {
 	   }
 	}
  
+	
 	/**
 	* This method gets called whenever a key is released. It sets the player's velX and velY to zero accordingly.
 	*/
 	
 	public void keyReleased(KeyEvent e){
 		int key = e.getKeyCode();
-		Player p = Game.player;
 		if (key == KeyEvent.VK_UP){
-			p.setVelY(0);
+			Game.k_up = false;
 		}
 		if (key == KeyEvent.VK_DOWN){
-			p.setVelY(0);
+			Game.k_down = false;
 		}
 		if (key == KeyEvent.VK_RIGHT){
-			p.setVelX(0);
+			Game.k_right = false;
 		}
 		if (key == KeyEvent.VK_LEFT){
-			p.setVelX(0);
+			Game.k_left = false;
 		}
 		if (key == KeyEvent.VK_W){
-			p.setVelY(0);
+			Game.k_w = false;
 		}
-		if (key == KeyEvent.VK_S){
-			p.setVelY(0);
+		else if (key == KeyEvent.VK_S){
+			Game.k_s = false;
 		}
 		if (key == KeyEvent.VK_D){
-			p.setVelX(0);
+			Game.k_d = false;
 		}
-		if (key == KeyEvent.VK_A){
-			p.setVelX(0);
+		else if (key == KeyEvent.VK_A){
+			Game.k_a = false;
 		}
 		// quits the game if the Esc key is pressed
 		if (key == KeyEvent.VK_ESCAPE){

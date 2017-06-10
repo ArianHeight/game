@@ -69,6 +69,15 @@ public class Spawner {
 						numberOfEnemies ++;
 					}
 				}
+				//debug
+				/*
+				if (hud.getLevel() >= 1){
+					for (int i = 0; i < 4 * (hud.getLevel()); i++){
+						int [] coord = enemyCoordinates();
+						handler.addObject(new ZombieKnight(coord[0], coord[1], handler, hud));
+						numberOfEnemies ++;
+					}
+				}*/
 				if (hud.getLevel() >= 30){
 					for (int i = 0; i < 4 * (hud.getLevel() - 30); i++){
 						int [] coord = enemyCoordinates();
