@@ -29,8 +29,9 @@ public class ZombieKnight extends Enemy {
 		super(x, y, handler, hud);
 		id = ID.ZombieKnight;
 		ai = new HeavyChaser();
-		setHealth(300);
-		setMaxHealth(300);
+		setHealth(300 + 6 * hud.getLevel());
+		setMaxHealth(300 + 6 * hud.getLevel());
+		setVel(1);
 		
 		//sets some variables
 		stunMaxTime = 10;
@@ -162,9 +163,6 @@ public class ZombieKnight extends Enemy {
 	{	
 		x += stunX * Math.abs(xDiff / distToPlayer);
 		y += stunY * Math.abs(yDiff / distToPlayer);
-		
-		x = Game.clamp(x, -1000, 2625);
-		y = Game.clamp(y, -1000, 1500);
 		
 		if (stunTimer == 0)
 		{
