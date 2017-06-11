@@ -150,7 +150,7 @@ public class Zombie extends Enemy {
 	
 	
 	public void render(Graphics g) {
-		Image img = new ImageIcon(this.getClass().getResource("/Zombie.png")).getImage();
+		Image img = new ImageIcon(this.getClass().getResource("/zombie.png")).getImage();
 		updateWindowCoordinates();
 		g.drawImage(img, (int)winX, (int)winY, (int)winX + 32, (int)winY + 32, 0, 0, 32, 32, null);
 		
