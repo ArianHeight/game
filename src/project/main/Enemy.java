@@ -46,10 +46,10 @@ public abstract class Enemy extends GameObject {
 		super(x, y);
 		this.handler = handler;
 		this.hud = hud;
-		
-		velX = 2;
-		velY = 2;
-		vel = Math.sqrt(velX * velX + velY * velY);
+
+		velX = 0;
+		velY = 0;
+		vel = 3;
 		
 		this.conditions = new ArrayList<String>();
 		//this.effects = this.ai.getFX();
@@ -153,6 +153,7 @@ public abstract class Enemy extends GameObject {
 		g.fillRect((int)winX, (int)winY - 10, (int)32, 6);
 		// changes color of health as it decreases from green (max health) to red (min health)
 		g.setColor(new Color(0, 255, 0));
+		if (health < 0){ health = 0; }
 		g.fillRect((int)winX, (int)winY - 10, (int)(health * 1.0 / MAX_HEALTH * 32), 6);
 		g.setColor(Color.white);
 		g.drawRect((int)winX, (int)winY - 10, (int)32, 6);
@@ -162,6 +163,7 @@ public abstract class Enemy extends GameObject {
 	
 	public void setVelX(double velX){ this.velX = velX;	}
 	public void setVelY(double velY){ this.velY = velY;	}
+	public void setVel(double vel){ this.vel = vel;	}
 	public void setHealth(int health){ this.health = health; }
 	public int getHealth(){ return health; }
 	public void setMaxHealth(int health){ this.MAX_HEALTH = health; }
