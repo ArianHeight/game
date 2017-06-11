@@ -186,7 +186,6 @@ public class Game extends Canvas implements Runnable{
 					img = img2;
 				}
 				g.drawImage(img, tileSizeX * (i-1) - (int)camera.getX(), tileSizeY * (j-1) - (int)camera.getY(), tileSizeX * i - (int)camera.getX(), tileSizeY * j - (int)camera.getY(), 0, 0, 32, 32, null);
-				//g.drawImage(img, tileSizeX * (i-1), tileSizeY * (j-1), tileSizeX * i, tileSizeY * j, 0, 0, 32, 32, null);
 			}
 		}
 		
@@ -202,6 +201,7 @@ public class Game extends Canvas implements Runnable{
 			//hud.render(g);
 			reset.render(g);
 			handler.running = true;
+			
 		} 
 		else if (gameState == STATE.Menu || gameState == STATE.Help){
 			menu.render(g);
