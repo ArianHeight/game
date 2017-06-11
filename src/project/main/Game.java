@@ -1,3 +1,4 @@
+
 package project.main;
 
 import java.awt.Canvas;
@@ -17,7 +18,6 @@ import balls.LifeBall;
 import balls.MysteryBall;
 import balls.RockBall;
 import balls.WaterBall;
-import project.main.Game.STATE;
 
 /**
  * 
@@ -169,6 +169,12 @@ public class Game extends Canvas implements Runnable{
 			else if (k_down){
 				p.setVelY(vel);
 			}
+			else if (k_w){
+				p.setVelY(-vel);
+			}
+			else if (k_s){
+				p.setVelY(vel);
+			}
 			else
 			{
 				p.setVelY(0);
@@ -179,10 +185,17 @@ public class Game extends Canvas implements Runnable{
 			else if (k_left){
 				p.setVelX(-vel);
 			}
+			else if (k_d){
+				p.setVelX(vel);
+			}
+			else if (k_a){
+				p.setVelX(-vel);
+			}
 			else
 			{
 				p.setVelX(0);
 			}
+			/*
 			if (k_w){
 				p.setVelY(-vel);
 			}
@@ -203,6 +216,7 @@ public class Game extends Canvas implements Runnable{
 			{
 				p.setVelX(0);
 			}
+			*/
 		}
 	}
 	
