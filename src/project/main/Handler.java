@@ -25,40 +25,36 @@ public class Handler {
 			return;
 		}
 		for (int i = enemies.size() - 1; i >= 0; i--){
-			if (i >= enemies.size()){
-				return;
+			if (i >= enemies.size() || enemies.get(i) == null){
+				
 			}
-			if (enemies.get(i) == null){
-				return;
+			else {
+				enemies.get(i).tick();
 			}
-			enemies.get(i).tick();
 		}
 		for (int i = balls.size() - 1; i >= 0; i--){
-			if (i >= balls.size()){
-				return;
+			if (i >= balls.size() || balls.get(i) == null){
+				
 			}
-			if (balls.get(i) == null){
-				return;
+			else {
+				balls.get(i).tick();
 			}
-			balls.get(i).tick();
 		}
 		for (int i = collectibles.size() - 1; i >= 0; i--){
-			if (i >= collectibles.size()){
-				return;
+			if (i >= collectibles.size() || collectibles.get(i) == null){
+				
 			}
-			if (collectibles.get(i) == null){
-				return;
+			else {
+				collectibles.get(i).tick();
 			}
-			collectibles.get(i).tick();
 		}
 		for (int i = explosions.size() - 1; i >= 0; i--){
-			if (i >= explosions.size()){
-				return;
+			if (i >= explosions.size() || explosions.get(i) == null){
+				
 			}
-			if (explosions.get(i) == null){
-				return;
+			else {
+				explosions.get(i).tick();
 			}
-			explosions.get(i).tick();
 		}
 	}
 	 
@@ -66,41 +62,37 @@ public class Handler {
 		if (!running){
 			return;
 		}
+		for (int i = collectibles.size() - 1; i >= 0; i--){
+			if (i >= collectibles.size() || collectibles.get(i) == null){
+				
+			}
+			else {
+				collectibles.get(i).render(g);
+			}
+		}
 		for (int i = enemies.size() - 1; i >= 0; i--){
-			if (i >= enemies.size()){
-				return;
+			if (i >= enemies.size() || enemies.get(i) == null){
+				
 			}
-			if (enemies.get(i) == null){
-				return;
+			else {
+				enemies.get(i).render(g);
 			}
-			enemies.get(i).render(g);
 		}
 		for (int i = balls.size() - 1; i >= 0; i--){
-			if (i >= balls.size()){
-				return;
+			if (i >= balls.size() || balls.get(i) == null){
+				
 			}
-			if (balls.get(i) == null){
-				return;
+			else {
+				balls.get(i).render(g);
 			}
-			balls.get(i).render(g);
-		}
-		for (int i = collectibles.size() - 1; i >= 0; i--){
-			if (i >= collectibles.size()){
-				return;
-			}
-			if (collectibles.get(i) == null){
-				return;
-			}
-			collectibles.get(i).render(g);
 		}
 		for (int i = explosions.size() - 1; i >= 0; i--){
-			if (i >= explosions.size()){
-				return;
+			if (i >= explosions.size() || explosions.get(i) == null){
+				
 			}
-			if (explosions.get(i) == null){
-				return;
+			else {
+				explosions.get(i).render(g);
 			}
-			explosions.get(i).render(g);
 		}
 	}
 	 
@@ -131,22 +123,31 @@ public class Handler {
 				}
 			}
 		}
-		for (Ball b: balls){
-			if (b != null){
-				b.setMoving(false);
+		for (int i = balls.size() - 1; i >= 0; i--){
+			if (!(i >= balls.size())){
+				Ball e = balls.get(i);
+				if (e != null){
+					e.setMoving(false);
+				}
 			}
 		}
 	}
 	
 	public void unfreezeObjects(){
-		for (Enemy e: enemies){
-			if (e != null){
-				e.setMoving(true);
+		for (int i = enemies.size() - 1; i >= 0; i--){
+			if (!(i >= enemies.size())){
+				Enemy e = enemies.get(i);
+				if (e != null){
+					e.setMoving(true);
+				}
 			}
 		}
-		for (Ball b: balls){
-			if (b != null){
-				b.setMoving(true);
+		for (int i = balls.size() - 1; i >= 0; i--){
+			if (!(i >= balls.size())){
+				Ball e = balls.get(i);
+				if (e != null){
+					e.setMoving(true);
+				}
 			}
 		}
 	}
