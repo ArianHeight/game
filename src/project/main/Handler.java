@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import balls.Ball;
+import project.main.Game.STATE;
 
 /**
  * Handler
@@ -21,7 +22,7 @@ public class Handler {
 	public ArrayList<Explosion> explosions = new ArrayList<Explosion>();
 	 
 	public void tick(){
-		if (!running){
+		if (!(Game.gameState == STATE.Game || Game.gameState == STATE.UpgradeStore)){
 			return;
 		}
 		for (int i = enemies.size() - 1; i >= 0; i--){
@@ -59,7 +60,7 @@ public class Handler {
 	}
 	 
 	public void render(Graphics g){
-		if (!running){
+		if (!(Game.gameState == STATE.Game || Game.gameState == STATE.UpgradeStore)){
 			return;
 		}
 		for (int i = collectibles.size() - 1; i >= 0; i--){
