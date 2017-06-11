@@ -20,7 +20,7 @@ public abstract class Collectible extends GameObject {
 			time--;
 		}
 		
-		if (time == 0){
+		if (time <= 0){
 			Game.handler.collectibles.remove(this);
 		}
 	}
