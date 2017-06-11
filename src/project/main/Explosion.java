@@ -34,7 +34,7 @@ public class Explosion extends GameObject {
 
 	@Override
 	public void tick() {
-		if (time == 0){
+		if (time <= 0){
 			Game.handler.explosions.remove(this);
 		}
 		if (Game.gameState == STATE.Game){
