@@ -21,7 +21,7 @@ public class UpgradeStore extends MouseAdapter {
 	private int ballSpeedUpgrades = 0;
 	
 	private boolean [] ballPurchased = {false, false, false, false, false, false};
-	private int [] ballCosts = {10, 150, 100, 1, 1, 243};
+	private int [] ballCosts = {10, 50, 100, 1, 1, 2};
 	
 	public UpgradeStore(HUD hud){
 		this.hud = hud;
@@ -40,7 +40,7 @@ public class UpgradeStore extends MouseAdapter {
 		g.setFont(new Font("arial", 0, 12));
 		g.drawString("Upgrade Health", 110, 120);
 		if (healthUpgrades >= 10){
-			g.drawString("---", 110, 140);
+			g.drawString("Cost: ---", 110, 150);
 		}
 		else {
 			g.drawString("Cost: " + baseCosts[0], 110, 140);
@@ -49,8 +49,8 @@ public class UpgradeStore extends MouseAdapter {
 		
 		// box 2
 		g.drawString("Upgrade Speed", 260, 120);
-		if (speedUpgrades >= 10){
-			g.drawString("---", 260, 140);
+		if (speedUpgrades >= 5){
+			g.drawString("Cost: ---", 260, 140);
 		}
 		else {
 			g.drawString("Cost: " + baseCosts[1], 260, 140);
@@ -68,9 +68,11 @@ public class UpgradeStore extends MouseAdapter {
 		g.drawString("Upgrade Ball", 560, 120);
 		g.drawString("Speed", 560, 135);
 		if (ballSpeedUpgrades >= 10){
-			g.drawString("---", 560, 140);
+			g.drawString("Cost: ---", 560, 155);
 		}
-		g.drawString("Cost: " + baseCosts[3], 560, 155);
+		else {
+			g.drawString("Cost: " + baseCosts[3], 560, 155);
+		}
 		g.drawRect(550, 100, 100, 80);
 		
 		// box 5
@@ -89,39 +91,45 @@ public class UpgradeStore extends MouseAdapter {
 		g.setFont(new Font("arial", 0, 30));
 		g.drawString("Balls", Game.WIDTH / 2 - 50, 250);
 		
-		for (int i = 1; i <= 6; i++){
+		for (int i = 0; i <= 6; i++){
 			g.setFont(new Font("arial", 0, 12));
-			
+			if (i == 0){
+				g.drawString("Water Ball", 150 * i + 110, 320);
+			}
 			if (i == 1){
-				g.drawString("Fire Ball", 150 * i - 40, 320);
+				g.drawString("Fire Ball", 150 * i + 110, 320);
 			}
 			if (i == 2){
-				g.drawString("Rock Ball", 150 * i - 40, 320);
+				g.drawString("Rock Ball", 150 * i + 110, 320);
 			}
 			if (i == 3){
-				g.drawString("Flux Ball", 150 * i - 40, 320);
+				g.drawString("Flux Ball", 150 * i + 110, 320);
 			}
 			if (i == 4){
-				g.drawString("Life Ball", 150 * i - 40, 320);
+				g.drawString("Life Ball", 150 * i + 110, 320);
 			}
 			if (i == 5){
-				g.drawString("Crystal Ball", 150 * i - 40, 320);
+				g.drawString("Crystal Ball", 150 * i + 110, 320);
 			}
 			if (i == 6){
-				g.drawString("??? Ball", 150 * i - 40, 320);
+				g.drawString("??? Ball", 150 * i + 110, 320);
 			}
 			String cost;
-			if (ballCosts[i - 1] == 99999){
+			if (i == 0){
+				cost = "Press to Equip";
+			}
+			else if (ballCosts[i - 1] == 99999){
 				cost = "Press to Equip";
 			}
 			else {
 				cost = "Cost: " + ballCosts[i-1];
 			}
-			g.drawString(cost, 150 * i - 40, 340);
-			g.drawRect(150 * i - 50, 300, 100, 80);
+			g.drawString(cost, 150 * i + 110, 340);
+			g.drawRect(150 * i + 100, 300, 100, 80);
 		}
 		g.setFont(new Font("arial", 0, 25));
 		g.drawString("Coins: " + hud.getCoins(), 550, 600);
+		g.drawString("Ball: " + convertName(), 550, 650);
 	}
 	
 	public void mousePressed(MouseEvent e){
@@ -149,7 +157,7 @@ public class UpgradeStore extends MouseAdapter {
 						hud.setCoins(hud.getCoins() - baseCosts[1]);
 						baseCosts[1] += upgradeIncreases[1];
 						Game.player.setVel(Game.player.getVel() + 1);
-						//speedUpgrades++;
+						speedUpgrades++;
 					}
 				}
 			}
@@ -161,7 +169,7 @@ public class UpgradeStore extends MouseAdapter {
 						hud.setCoins(hud.getCoins() - baseCosts[3]);
 						Ball.speedMultiplier += 0.2;
 						baseCosts[3] += upgradeIncreases[3];
-						//ballSpeedUpgrades++;
+						ballSpeedUpgrades++;
 					}
 				}
 			}
@@ -177,8 +185,11 @@ public class UpgradeStore extends MouseAdapter {
 				}
 			}
 			
-			for (int i = 1; i <= 6; i++){
-				if (mx >= (150 * i - 50) && mx <= (150 * i + 50) && my >= 300 && my <= 380){
+			for (int i = 0; i <= 6; i++){
+				if (mx >= (150 * i - 50 + 150) && mx <= (150 * i + 50 + 150) && my >= 300 && my <= 380){
+					if (i == 0){
+						Game.currentBall = ID.WaterBall;
+					}
 					if (i == 1){
 						if (ballPurchased[0]){
 							Game.currentBall = ID.FireBall;
@@ -255,7 +266,7 @@ public class UpgradeStore extends MouseAdapter {
 		int [] ui = {15, 10, 0, 15, 25};
 		
 		boolean [] bp = {false, false, false, false, false, false};
-		int [] bco = {10, 150, 100, 1, 1, 2243};
+		int [] bco = {10, 50, 100, 1, 1, 2};
 		
 		for (int i = 0; i < bc.length; i++){
 			baseCosts[i] = bc[i];
@@ -274,5 +285,10 @@ public class UpgradeStore extends MouseAdapter {
 		healthUpgrades = 0;
 		speedUpgrades = 0;
 		ballSpeedUpgrades = 0;
+	}
+	
+	public String convertName(){
+		String s = Game.currentBall + "";
+		return s.substring(0, s.indexOf("B")) + " Ball";
 	}
 }
