@@ -18,8 +18,8 @@ public class Zombie extends Enemy {
 		super(x, y, handler, hud);
 		id = ID.Zombie;
 		ai = new SimpleChaser();
-		setHealth(100);
-		setMaxHealth(100);
+		setHealth(100 + 2 * hud.getLevel());
+		setMaxHealth(100 + 2 * hud.getLevel());
 		
 		//sets some variables
 		stunMaxTime = 20;
@@ -126,10 +126,7 @@ public class Zombie extends Enemy {
 	{	
 		x += stunX * Math.abs(xDiff / distToPlayer);
 		y += stunY * Math.abs(yDiff / distToPlayer);
-		
-		x = Game.clamp(x, -1000, 2625);
-		y = Game.clamp(y, -1000, 1500);
-		
+
 		if (stunTimer == 0)
 		{
 			stunX = 0;
