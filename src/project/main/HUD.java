@@ -22,7 +22,7 @@ public class HUD {
 	
 	public void tick(){		
 		HEALTH = Game.clamp(HEALTH, 0, MAX_HEALTH);
-		greenValue = HEALTH * 2;
+		greenValue = HEALTH * 200 / MAX_HEALTH;
 		greenValue = Game.clamp(greenValue, 0, 255);
 		time++;
 	}
@@ -42,7 +42,7 @@ public class HUD {
 		g.drawString("Score: " + score, 15, 100);
 		g.drawString("Coins: " + coins, 15, 115);
 		g.drawString("Enemies Left: " + Game.spawner.getEnemiesLeft(), 15, 130);
-		
+		g.drawString("Coins Left: " + Game.handler.collectibles.size(), 15, 145);
 		g.drawString("Spiral Countdown: " + Game.player.getSpiralCounter(), 15, 160);
 		g.drawString("Press u to open upgrade menu", 15, 190);
 	}
