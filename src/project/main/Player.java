@@ -6,6 +6,9 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
+import balls.Ball;
+import project.main.Game.STATE;
+
 public class Player extends GameObject{
 	protected double velX, velY;
 	protected double vel;
@@ -49,12 +52,7 @@ public class Player extends GameObject{
 		for (int i = Game.handler.enemies.size() - 1; i >= 0; i--){
 			Enemy tempObject = Game.handler.enemies.get(i);
 			
-			if (tempObject.getId() == ID.ZombieThrower){
-				if (getBounds().intersects(tempObject.getBounds())){
-					HUD.HEALTH -= 1;
-				}
-			}
-			else if (tempObject.getId() == ID.Zombie || tempObject.getId() == ID.ZombieKnight)
+			if (tempObject.getId() == ID.Zombie || tempObject.getId() == ID.ZombieKnight)
 			{
 				if (tempObject.getIsAttacking())
 				{
@@ -93,6 +91,41 @@ public class Player extends GameObject{
 				if (getBounds().intersects(tempObject.getBounds())){
 					hud.setCoins(hud.getCoins() + 1);
 					Game.handler.collectibles.remove(tempObject);
+				}
+			}
+		}
+		
+		for (int i = Game.handler.enemyBalls.size() - 1; i >= 0; i--){
+			Ball tempObject = Game.handler.enemyBalls.get(i);
+			if (tempObject == null || Game.gameState != STATE.Game){
+				return;
+			}
+			if (tempObject.getId() == ID.RockBall || tempObject.getId() == ID.LifeBall){
+				if (getBounds().intersects(tempObject.getBounds())){
+					HUD.HEALTH -= (int)(((Ball)tempObject).getPower()); //balls have normal dmg on player
+					
+					Game.handler.enemyBalls.remove(tempObject);
+				}
+			}
+			else if (tempObject.getId() == ID.WaterBall || tempObject.getId() == ID.FireBall || tempObject.getId() == ID.CrystalBall){
+				if (getBounds().intersects(tempObject.getBounds())){
+					HUD.HEALTH -= (int)(((Ball)tempObject).getPower() * 0.2); //balls have 20% effect on player
+					
+					Game.handler.enemyBalls.remove(tempObject);
+				}
+			}
+			else if (tempObject.getId() == ID.FluxBall){
+				if (getBounds().intersects(tempObject.getBounds())){
+					HUD.HEALTH -= (int)(((Ball)tempObject).getPower() * 0.05); //balls have 5% effect on player
+					
+					Game.handler.enemyBalls.remove(tempObject);
+				}
+			}
+			else if (tempObject.getId() == ID.MysteryBall){
+				if (getBounds().intersects(tempObject.getBounds())){
+					HUD.HEALTH -= (int)(((Ball)tempObject).getPower() * 0.00035); //balls have 0.035% effect on player
+					
+					Game.handler.enemyBalls.remove(tempObject);
 				}
 			}
 		}

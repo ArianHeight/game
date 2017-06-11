@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
+import project.main.Game.STATE;
 import simpleAI.SimpleChaser;
 
 public class Zombie extends Enemy {
@@ -25,8 +26,8 @@ public class Zombie extends Enemy {
 		
 		//sets some variables
 		stunMaxTime = 20;
-		pre_atkMaxTime = 20;
-		atkCooldownMaxTime = 100;
+		pre_atkMaxTime = 7;
+		atkCooldownMaxTime = 68;
 		atkDMG = 10;
 	}
 	
@@ -126,21 +127,10 @@ public class Zombie extends Enemy {
 		return new Rectangle(atkX, atkY, atkDimensions, atkDimensions);
 	}
 	
-	public void stunMove()
-	{	
-		x += stunX * Math.abs(xDiff / distToPlayer);
-		y += stunY * Math.abs(yDiff / distToPlayer);
-
-		if (stunTimer == 0)
-		{
-			stunX = 0;
-			stunY = 0;
-		}
-		
-		stunTimer -= 1;
-	}
-	
 	public void tick() {
+		if (Game.gameState != STATE.Game){
+			return;
+		}
 	    super.tick();
 	    super.collision();
 		updateConditions();

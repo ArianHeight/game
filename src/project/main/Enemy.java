@@ -125,17 +125,27 @@ public abstract class Enemy extends GameObject {
 	//protected abstract void updateConditions(boolean takenDamage);
 	
 	public void move(){
-		double xDiff = Game.player.getX() - x;
-		double yDiff = Game.player.getY() - y;
-		double dist = Math.sqrt((xDiff * xDiff) + (yDiff * yDiff));
-		
-		this.velX = vel * (xDiff / dist);
-		this.velY = vel * (yDiff / dist);
+		this.velX = vel * (xDiff / distToPlayer);
+		this.velY = vel * (yDiff / distToPlayer);
 		
 		if (isMoving){
 			x += velX;
 			y += velY;
 		}
+	}
+	
+	public void stunMove()
+	{	
+		x += stunX * Math.abs(xDiff / distToPlayer);
+		y += stunY * Math.abs(yDiff / distToPlayer);
+
+		if (stunTimer == 0)
+		{
+			stunX = 0;
+			stunY = 0;
+		}
+		
+		stunTimer -= 1;
 	}
 
 	@Override

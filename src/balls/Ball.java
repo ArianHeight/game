@@ -60,6 +60,7 @@ public abstract class Ball extends GameObject {
 		
 		if (time == 0){
 			Game.handler.balls.remove(this);
+			Game.handler.enemyBalls.remove(this);
 		}
 	}
 
@@ -79,4 +80,5 @@ public abstract class Ball extends GameObject {
 	public void setPower(int power){ this.power = power; }
 	public double getVelX(){ return velX; }
 	public double getVelY(){ return velY; }
+	public double getVel() { return vel; }
 }

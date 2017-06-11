@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
+import project.main.Game.STATE;
 import simpleAI.HeavyChaser;
 
 public class ZombieKnight extends Enemy {
@@ -37,9 +38,9 @@ public class ZombieKnight extends Enemy {
 		setVel(1);
 		
 		//sets some variables
-		stunMaxTime = 10;
-		pre_atkMaxTime = 50;
-		atkCooldownMaxTime = 150;
+		stunMaxTime = 5;
+		pre_atkMaxTime = 3;
+		atkCooldownMaxTime = 142;
 		atkDMG = 20;
 	}
 
@@ -223,7 +224,9 @@ public class ZombieKnight extends Enemy {
 	
 	public void tick()
 	{
-		
+		if (Game.gameState != STATE.Game){
+			return;
+		}
 		super.tick();
 	    super.collision();
 		updateConditions();

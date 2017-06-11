@@ -18,6 +18,7 @@ public class Handler {
 	
 	public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	public ArrayList<Ball> balls = new ArrayList<Ball>();
+	public ArrayList<Ball> enemyBalls = new ArrayList<Ball>(); //balls that can hurt the player
 	public ArrayList<Collectible> collectibles = new ArrayList<Collectible>();
 	public ArrayList<Explosion> explosions = new ArrayList<Explosion>();
 	 
@@ -39,6 +40,14 @@ public class Handler {
 			}
 			else {
 				balls.get(i).tick();
+			}
+		}
+		for (int i = enemyBalls.size() - 1; i >= 0; i--){
+			if (i >= enemyBalls.size() || enemyBalls.get(i) == null){
+				
+			}
+			else {
+				enemyBalls.get(i).tick();
 			}
 		}
 		for (int i = collectibles.size() - 1; i >= 0; i--){
@@ -87,6 +96,14 @@ public class Handler {
 				balls.get(i).render(g);
 			}
 		}
+		for (int i = enemyBalls.size() - 1; i >= 0; i--){
+			if (i >= enemyBalls.size() || enemyBalls.get(i) == null){
+				
+			}
+			else {
+				enemyBalls.get(i).render(g);
+			}
+		}
 		for (int i = explosions.size() - 1; i >= 0; i--){
 			if (i >= explosions.size() || explosions.get(i) == null){
 				
@@ -132,6 +149,14 @@ public class Handler {
 				}
 			}
 		}
+		for (int i = enemyBalls.size() - 1; i >= 0; i--){
+			if (!(i >= enemyBalls.size())){
+				Ball e = enemyBalls.get(i);
+				if (e != null){
+					e.setMoving(false);
+				}
+			}
+		}
 	}
 	
 	public void unfreezeObjects(){
@@ -146,6 +171,14 @@ public class Handler {
 		for (int i = balls.size() - 1; i >= 0; i--){
 			if (!(i >= balls.size())){
 				Ball e = balls.get(i);
+				if (e != null){
+					e.setMoving(true);
+				}
+			}
+		}
+		for (int i = enemyBalls.size() - 1; i >= 0; i--){
+			if (!(i >= enemyBalls.size())){
+				Ball e = enemyBalls.get(i);
 				if (e != null){
 					e.setMoving(true);
 				}
