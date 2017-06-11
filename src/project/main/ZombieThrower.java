@@ -10,8 +10,9 @@ public class ZombieThrower extends Enemy {
 	public ZombieThrower(int x, int y, Handler handler, HUD hud) {
 		super(x, y, handler, hud);
 		id = ID.ZombieThrower;
-		setHealth(150);
-		setMaxHealth(150);
+		setHealth(150 + 3 * hud.getLevel());
+		setMaxHealth(150 + 3 * hud.getLevel());
+		setVel(7);
 	}
 
 	public void tick()
