@@ -21,10 +21,10 @@ public class Coin extends Collectible {
 		double yDiff = Game.player.getY() - y;
 		double dist = Math.sqrt((xDiff * xDiff) + (yDiff * yDiff));
 		
-		if (dist <= 50.0)
+		if (dist <= 150.0)
 		{
-			this.x = Game.camera.lerp(this.x, Game.player.getX(), 0.25);
-			this.y = Game.camera.lerp(this.y, Game.player.getY(), 0.25);
+			this.x = Game.camera.lerp(this.x, Game.player.getX(), 0.3);
+			this.y = Game.camera.lerp(this.y, Game.player.getY(), 0.3);
 		}
 	}
 

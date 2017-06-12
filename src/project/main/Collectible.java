@@ -11,7 +11,7 @@ import project.main.Game.STATE;
  */
 
 public abstract class Collectible extends GameObject {
-	private int time = 300;
+	private int time = 900;
 	public Collectible(double x, double y) {
 		super(x, y);
 	}
