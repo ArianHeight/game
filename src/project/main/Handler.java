@@ -3,8 +3,8 @@ package project.main;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-import balls.Ball;
 import project.main.Game.STATE;
+import balls.Ball;
 
 /**
  * Handler
@@ -47,8 +47,9 @@ public class Handler {
 				
 			}
 			else {
-				enemyBalls.get(i).tick();
-				enemyBalls.get(i).isEnemy = true;
+				Ball e = enemyBalls.get(i);
+				e.tick();
+				e.isEnemy = true;
 			}
 		}
 		for (int i = collectibles.size() - 1; i >= 0; i--){

@@ -294,10 +294,7 @@ public class Game extends Canvas implements Runnable{
 		//for drawing void areas
 		for (VoidAttack v : voidAreas)
 		{
-			if (v.isPulling())
-			{
-				v.render(g);
-			}
+			v.render(g);
 		}
 		
 		if (gameState == STATE.Game){

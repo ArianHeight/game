@@ -11,13 +11,13 @@ public class VoidAttack {
 	private boolean attacking = false;
 	private boolean pulling = false;
 	private int voidRadius = 300;
-	private int voidForce = 5; 
+	private int voidForce = 4; 
 	private int pre_vAtkTimer = -1;
-	private int pre_vAtkMaxTime = 200;
+	private int pre_vAtkMaxTime = 60;
 	private int voidAttackTimer = -1;
-	private int voidAttackMaxTime = 250;
+	private int voidAttackMaxTime = 350;
 	private int vAtkCooldownTimer = -1;
-	private int vAtkCooldownMaxTime = 650;
+	private int vAtkCooldownMaxTime = 800;
 	private Image texture;
 	
 	private int x, y;
@@ -63,6 +63,10 @@ public class VoidAttack {
 		if (pre_vAtkTimer != -1)
 		{
 			pre_vAtkTimer--;
+			
+			//updates winX, winY
+			winX = (int)(x - Game.camera.X + Game.WIDTH / 2);
+			winY = (int)(y - Game.camera.Y + Game.HEIGHT / 2);
 		}
 		else if (voidAttackTimer != -1) //actual pull begins
 		{
@@ -126,7 +130,16 @@ public class VoidAttack {
 	
 	public void render(Graphics g)
 	{
-		g.drawImage(texture, (int)winX - voidRadius / 2, (int)winY - voidRadius / 2, (int)winX + voidRadius / 2, (int)winY + voidRadius / 2, 0, 0, 32, 32, null);
+		if (pulling) //full size
+		{
+			int add = voidRadius / 2;
+			g.drawImage(texture, (int)winX - add, (int)winY - add, (int)winX + add, (int)winY + add, 0, 0, 32, 32, null);
+		}
+		else if (pre_vAtkTimer != -1) //scales up
+		{
+			int add = (int)((double)(pre_vAtkMaxTime - pre_vAtkTimer) / pre_vAtkMaxTime * voidRadius / 2);
+			g.drawImage(texture, (int)winX - add, (int)winY - add, (int)winX + add, (int)winY + add, 0, 0, 32, 32, null);
+		}
 	}
 	
 	public int getDMG() { return voidForce; }

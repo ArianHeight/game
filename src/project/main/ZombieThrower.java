@@ -35,8 +35,8 @@ public class ZombieThrower extends Enemy {
 		
 		//sets some variables
 		stunMaxTime = 12;
-		pre_atkMaxTime = 2;
-		atkCooldownMaxTime = 238;
+		pre_atkMaxTime = 15;
+		atkCooldownMaxTime = 225;
 		dodgeMaxTime = 6;
 		dodgeCooldownMaxTime = 24;
 		atkDMG = 7;
@@ -278,5 +278,35 @@ public class ZombieThrower extends Enemy {
 		updateWindowCoordinates();
 		g.drawImage(img, (int)winX, (int)winY, (int)winX + 32, (int)winY + 32, 0, 0, 32, 32, null);
 		super.render(g);
+		
+		//render ball only if pre_vAtkTimer is activated
+		if (pre_atkTimer != -1) 
+		{
+			Image ball;
+			switch (ballType)
+			{
+			case 0: //water
+				ball = new ImageIcon(this.getClass().getResource("/waterball.png")).getImage();
+				break;
+			case 1: //rock
+				ball = new ImageIcon(this.getClass().getResource("/rockball.png")).getImage();
+				break;
+			case 2: //fire
+				ball = new ImageIcon(this.getClass().getResource("/fireball.png")).getImage();;
+				break;
+			case 3: //life
+				ball = new ImageIcon(this.getClass().getResource("/lifeball.png")).getImage();;
+				break;
+			case 4: //flux
+				ball = new ImageIcon(this.getClass().getResource("/fluxball.png")).getImage();
+				break;
+			case 5: //crystal
+				ball = new ImageIcon(this.getClass().getResource("/crystalball.png")).getImage();
+				break;
+			default: //mystery
+				ball = new ImageIcon(this.getClass().getResource("/mysteryball.png")).getImage();
+			}
+			g.drawImage(ball, (int)winX - 8, (int)winY - 8, (int)winX + 56, (int)winY + 56, 0, 0, 32, 32, null);
+		}
 	}
 }
