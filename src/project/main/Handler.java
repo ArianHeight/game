@@ -48,6 +48,7 @@ public class Handler {
 			}
 			else {
 				enemyBalls.get(i).tick();
+				enemyBalls.get(i).isEnemy = true;
 			}
 		}
 		for (int i = collectibles.size() - 1; i >= 0; i--){
@@ -124,6 +125,7 @@ public class Handler {
 		clearBalls();
 		clearCollectibles();
 		clearExplosions();
+		clearEnemyBalls();
 	}
 	
 	
@@ -131,6 +133,7 @@ public class Handler {
 	public void clearBalls(){ balls.clear(); }
 	public void clearCollectibles(){ collectibles.clear(); }
 	public void clearExplosions(){ explosions.clear(); }
+	public void clearEnemyBalls(){ enemyBalls.clear(); }
 
 	public void freezeObjects(){
 		for (int i = enemies.size() - 1; i >= 0; i--){

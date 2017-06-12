@@ -46,13 +46,14 @@ public class Menu extends MouseAdapter {
 			g.drawString("Help", 570, 50);
 			
 			g.setFont(font3);
-			g.drawString("Use UDLR keys to move player. Click to shoot.", 400, 200);
+			g.drawString("Use UDLR / WASD keys to move player. Click to shoot.", 400, 200);
 			g.drawString("Press space to use an AOE attack.", 400, 240);
 			g.drawString("Collect coins by defeating enemies.", 400, 280);
-			g.drawString("Press u to open the upgrade store.", 400, 320);
-			g.drawString("You lose health when a zombie approaches you.", 400, 360);
-			g.drawString("It is game over when you run out of health.", 400, 400);
-			g.drawString("Try to get the highest score possible. Have fun!", 400, 440);
+			g.drawString("Press u to open and close the upgrade store.", 400, 320);
+			g.drawString("You lose health when a zombie approaches you", 400, 360);
+			g.drawString("Or you are hit.", 400, 400);
+			g.drawString("It is game over when you run out of health.", 400, 440);
+			g.drawString("Try to get the highest score possible. Have fun!", 400, 480);
 			g.setFont(font2);
 			g.drawRect(Game.WIDTH / 2 - 100, 580, 200, 64);
 			g.drawString("Back", 600, 620);

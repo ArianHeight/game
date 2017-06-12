@@ -88,9 +88,5 @@ public class KeyboardInput extends KeyAdapter {
 		else if (key == KeyEvent.VK_A){
 			Game.k_a = false;
 		}
-		// quits the game if the Esc key is pressed
-		if (key == KeyEvent.VK_ESCAPE){
-			System.exit(1);
-		}
 	}
 }

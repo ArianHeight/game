@@ -138,7 +138,7 @@ public class Player extends GameObject{
 		for (int i = 0; i < 360; i += 10){
 			Game.generateBall(x + 16, y + 16, i * 2 * Math.PI / 360, this);
 		}
-		spiralCounter = 2;
+		spiralCounter = 60;
 	}
 	
 	public void freeze(){

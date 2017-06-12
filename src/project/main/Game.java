@@ -243,13 +243,13 @@ public class Game extends Canvas implements Runnable{
 			camera.tick();
 			spawner.tick();
 		}
-		/*
+		
 		if (HUD.HEALTH <= 0){
 			HUD.HEALTH = 100;
 			gameState = STATE.End;
 			e = new End(hud);
 		}
-		*/
+		
 	}
 	
 	
@@ -279,8 +279,10 @@ public class Game extends Canvas implements Runnable{
 			}
 		}
 		
-		player.render(g);
-		
+		if (gameState != STATE.End){
+			player.render(g);
+		}
+
 		//for drawing damage areas
 		Image swoosh = new ImageIcon(this.getClass().getResource("/swoosh.png")).getImage();
 		for (Rectangle r : dmgAreas)

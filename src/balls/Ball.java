@@ -21,6 +21,7 @@ public abstract class Ball extends GameObject {
 	
 	public static int ballCost;
 	public static boolean ballPurchased, infinitePierce;
+	public boolean isEnemy;
 	
 	/**
 	* Constructor
@@ -68,12 +69,20 @@ public abstract class Ball extends GameObject {
 	public void render(Graphics g) {
 		updateWindowCoordinates();
 		Image img = new ImageIcon(this.getClass().getResource("/lifeball.png")).getImage();
-		g.drawImage(img, (int)winX, (int)winY, (int)winX + 16, (int)winY + 16, 0, 0, 16, 16, null);
+		int size = 16;
+		if (isEnemy){
+			size = 32;
+		}
+		g.drawImage(img, (int)winX, (int)winY, (int)winX + size, (int)winY + size, 0, 0, 16, 16, null);
 	}
 
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle((int)winX, (int)winY, 4, 4);
+		int size = 4;
+		if (isEnemy){
+			size = 8;
+		}
+		return new Rectangle((int)winX, (int)winY, size, size);
 	}
 	
 	public int getPower(){ return power; }

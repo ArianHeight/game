@@ -21,7 +21,7 @@ public class UpgradeStore extends MouseAdapter {
 	private int ballSpeedUpgrades = 0;
 	
 	private boolean [] ballPurchased = {false, false, false, false, false, false};
-	private int [] ballCosts = {10, 50, 100, 1, 1, 2};
+	private int [] ballCosts = {10, 25, 75, 150, 300, 9001};
 	
 	public UpgradeStore(HUD hud){
 		this.hud = hud;
@@ -128,8 +128,9 @@ public class UpgradeStore extends MouseAdapter {
 			g.drawRect(150 * i + 100, 300, 100, 80);
 		}
 		g.setFont(new Font("arial", 0, 25));
-		g.drawString("Coins: " + hud.getCoins(), 550, 600);
-		g.drawString("Ball: " + convertName(), 550, 650);
+		g.drawString("Coins: " + hud.getCoins(), 550, 550);
+		g.drawString("Ball: " + convertName(), 550, 600);
+		g.drawString("Press u to exit", 550, 650);
 	}
 	
 	public void mousePressed(MouseEvent e){
@@ -266,7 +267,7 @@ public class UpgradeStore extends MouseAdapter {
 		int [] ui = {15, 10, 0, 15, 25};
 		
 		boolean [] bp = {false, false, false, false, false, false};
-		int [] bco = {10, 50, 100, 1, 1, 2};
+		int [] bco = {10, 25, 75, 150, 300, 9001};
 		
 		for (int i = 0; i < bc.length; i++){
 			baseCosts[i] = bc[i];

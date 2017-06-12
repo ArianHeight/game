@@ -38,11 +38,10 @@ public class LifeBall extends Ball {
 	public void render(Graphics g) {
 		updateWindowCoordinates();
 		Image img = new ImageIcon(this.getClass().getResource("/lifeball.png")).getImage();
-		g.drawImage(img, (int)winX, (int)winY, (int)winX + 16, (int)winY + 16, 0, 0, 16, 16, null);
-	}
-
-	@Override
-	public Rectangle getBounds() {
-		return new Rectangle((int)winX, (int)winY, 4, 4);
+		int size = 16;
+		if (isEnemy){
+			size = 32;
+		}
+		g.drawImage(img, (int)winX, (int)winY, (int)winX + size, (int)winY + size, 0, 0, 16, 16, null);
 	}
 }

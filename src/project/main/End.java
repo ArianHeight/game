@@ -33,6 +33,7 @@ public class End extends MouseAdapter {
 			
 			g.setFont(font3);
 			g.drawString("You lost with a score of: " + hud.getScore(), 500, 200);
+			g.drawString("Level: " + hud.getLevel(), 500, 250);
 			g.setFont(font2);
 			g.drawRect(Game.WIDTH / 2 - 100, 580, 200, 64);
 			g.drawString("Try Again", 580, 620);
