@@ -13,3 +13,5 @@ Edmond Xue:
 
 The source material above was created with the standard Java libraries and has not been licensed
 The authors gives user permission to copy the source material(Has to include this readme) without notifying the authors.
+
+PS. both demo version and full version of the game are in the game folder
