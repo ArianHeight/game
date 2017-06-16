@@ -84,7 +84,7 @@ public abstract class Enemy extends GameObject {
 						
 						HUD.HEALTH += h;
 					}
-					health -= (int)((Ball)tempObject).getPower();
+					health -= (int)((Ball)tempObject).getPower() * Ball.damageMultiplier;
 					stunX = (int)tempObject.getVelX();
 					stunY = (int)tempObject.getVelY();
 					stunTimer = stunMaxTime;
