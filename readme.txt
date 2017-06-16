@@ -22,4 +22,6 @@ Use of Repo:
 -game resources are in the img folder
 -game(runnable .jar file) is in the game folder
 
+-To download the game file(or any other files), click into the file and hit the download button on the top right of the subwindow
+
 PS. both demo version and full version of the game are in the game folder
