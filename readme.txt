@@ -16,6 +16,9 @@ The authors gives user permission to copy the source material(Has to include thi
 
 Use of Repo:
 -source code is in the src folder
+  -src/project/main
+  -src/ball
+  -src/simpleAI
 -game resources are in the img folder
 -game(runnable .jar file) is in the game folder
 
