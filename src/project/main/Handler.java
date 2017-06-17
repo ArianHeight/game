@@ -8,7 +8,7 @@ import balls.Ball;
 
 /**
  * Handler
- * A class that holds all of the GameObjects in a LinkedList (for efficiency). Calling its tick method calls the tick
+ * A class that holds all of the GameObjects in an ArrayList (for efficiency). Calling its tick method calls the tick
  * method for all of the GameObjects (same for render). It allows for the addition and removal of GameObjects.
  */
 
